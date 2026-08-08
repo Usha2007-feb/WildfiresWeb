@@ -6,7 +6,10 @@ import { api } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Layers, MapPin, Trees, Mountain, Calendar, ChevronRight } from "lucide-react";
 
-const GISZoneMap = dynamic(() => import("@/components/map/GISZoneMap"), { ssr: false });
+const GISZoneMap = dynamic(() => import("@/components/map/GISZoneMap"), {
+  ssr: false,
+  loading: () => <div className="flex h-full w-full items-center justify-center bg-slate-100"><div className="h-10 w-10 animate-spin rounded-full border-[3px] border-blue-500 border-t-transparent" /></div>,
+});
 
 interface ZoneFeature {
   id: number; name: string; type: string; state?: string; area_ha?: number;

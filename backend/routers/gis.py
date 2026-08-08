@@ -20,7 +20,7 @@ TYPE_COLORS = {
 def get_gis_map_data():
     rows = query(
         """SELECT z.id, z.name, z.type, z.state, z.district, z.area_ha,
-                  z.metadata, ST_AsGeoJSON(z.geom) as geojson
+                  z.metadata, ST_AsGeoJSON(z.geom, 6) as geojson
            FROM zones z
            WHERE z.geom IS NOT NULL
            ORDER BY z.type, z.name"""
