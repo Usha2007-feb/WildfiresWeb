@@ -49,7 +49,7 @@ export default function DeforestationMap({ onZonesLoaded, onZoneClick, onRectDra
         onZonesLoaded(distinct);
         distinct.forEach((z) => {
           try {
-            const layer = L.geoJSON(JSON.parse(z.geojson) as never, {
+            const layer = L.geoJSON(z.geojson as never, {
               style: { color: z.color, weight: 3, fillColor: z.color, fillOpacity: 0.18 },
             });
             layer.bindTooltip(

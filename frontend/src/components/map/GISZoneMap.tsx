@@ -27,7 +27,7 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 const STROKE_WEIGHT: Record<string, number> = {
-  reserve: 3, buffer_zone: 1.5, core_forest: 2.5, eco_sensitive: 1.5, beat_boundary: 1, compartment: 0.5,
+  reserve: 4, buffer_zone: 2, core_forest: 3, eco_sensitive: 2, beat_boundary: 1.5, compartment: 1,
 };
 
 const POI_LABELS: Record<string, string> = {
@@ -65,12 +65,15 @@ export default function GISZoneMap({ onZonesLoaded, onZoneClick, hiddenTypes }: 
       .then((zones: ZoneFeature[]) => {
         onZonesLoaded(zones);
         const m = new Map<number, L.GeoJSON>();
-        zones.forEach((z) => {
+        // Sort: reserves first (render on top), then core, then others
+        const order = ["reserve", "core_forest", "eco_sensitive", "buffer_zone", "beat_boundary", "compartment"];
+        const sorted = [...zones].sort((a, b) => order.indexOf(a.type) - order.indexOf(b.type));
+        sorted.forEach((z) => {
           try {
             const w = STROKE_WEIGHT[z.type] || 1;
-            const d = z.type === "buffer_zone" ? "4 2" : z.type === "eco_sensitive" ? "4 4" : undefined;
-            const layer = L.geoJSON(JSON.parse(z.geojson) as never, {
-              style: { color: z.color, weight: w, fillColor: z.color, fillOpacity: 0.06, dashArray: d },
+            const d = z.type === "buffer_zone" ? "5 3" : z.type === "eco_sensitive" ? "4 4" : undefined;
+            const layer = L.geoJSON(z.geojson as never, {
+              style: { color: z.color, weight: w, fillColor: z.color, fillOpacity: 0.15, dashArray: d },
             });
             layer.bindTooltip(
               `<div style="font-family:Inter;font-size:12px;line-height:1.5;max-width:200px">
