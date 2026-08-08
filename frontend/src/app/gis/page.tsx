@@ -111,13 +111,21 @@ export default function GISPortalPage() {
       {/* Legend */}
       <div className="absolute bottom-4 left-4 z-10 rounded-xl bg-white/95 backdrop-blur-xl px-4 py-3 shadow-lg ring-1 ring-slate-200/70">
         <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Zone Types</p>
-        <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5 mb-3">
           {typesSorted.map(([t]) => (
             <div key={t} className="flex items-center gap-2">
               <span className="h-2.5 w-2.5 rounded-full ring-1 ring-offset-1 ring-white" style={{ background: TYPE_COLORS[t] || "#94A3B8" }} />
               <span className="text-[12px] text-slate-600">{TYPE_LABELS[t] || t}</span>
             </div>
           ))}
+        </div>
+        <div className="border-t border-slate-100 pt-2">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">Field Resources</p>
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            {[{ e: "🏕️", l: "Guard Hub" }, { e: "📡", l: "Watchtower" }, { e: "💧", l: "Water" }, { e: "🚒", l: "Fire Stn" }, { e: "⛺", l: "Camp" }, { e: "🛂", l: "Checkpost" }].map((p) => (
+              <span key={p.l} className="text-[11px] text-slate-500">{p.e} {p.l}</span>
+            ))}
+          </div>
         </div>
       </div>
 

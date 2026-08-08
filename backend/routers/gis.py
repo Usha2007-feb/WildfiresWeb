@@ -38,6 +38,38 @@ def get_gis_map_data():
     ]
 
 
+POI_EMOJI: dict[str, str] = {
+    "guard_hub": "🏕️",
+    "watchtower": "📡",
+    "water_source": "💧",
+    "fire_station": "🚒",
+    "camp": "⛺",
+    "checkpoint": "🛂",
+    "helipad": "🚁",
+    "fuel_depot": "⛽",
+}
+
+
+@router.get("/pois")
+def get_pois():
+    rows = query(
+        """SELECT p.id, p.name, p.type, p.lat, p.lon, p.zone_id, z.name as zone_name,
+                  p.metadata
+           FROM points_of_interest p
+           JOIN zones z ON p.zone_id = z.id
+           ORDER BY p.type, p.name"""
+    )
+    return [
+        {
+            "id": r["id"], "name": r["name"], "type": r["type"],
+            "lat": r["lat"], "lon": r["lon"], "zone_id": r["zone_id"],
+            "zone_name": r["zone_name"], "metadata": r.get("metadata") or {},
+            "emoji": POI_EMOJI.get(r["type"], "📍"),
+        }
+        for r in rows
+    ]
+
+
 @router.get("/zones/{zone_id}")
 def get_gis_zone_detail(zone_id: int):
     rows = query(

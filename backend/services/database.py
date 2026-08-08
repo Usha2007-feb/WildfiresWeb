@@ -120,6 +120,22 @@ def init_schema():
             cur.execute("CREATE INDEX IF NOT EXISTS idx_veg_zone ON vegetation_history(zone_id);")
             cur.execute("CREATE INDEX IF NOT EXISTS idx_veg_year ON vegetation_history(year);")
 
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS points_of_interest (
+                    id SERIAL PRIMARY KEY,
+                    zone_id INTEGER REFERENCES zones(id) ON DELETE CASCADE,
+                    name VARCHAR(255) NOT NULL,
+                    type VARCHAR(50) NOT NULL,
+                    lat REAL NOT NULL,
+                    lon REAL NOT NULL,
+                    geom GEOMETRY(Point, 4326),
+                    metadata JSONB DEFAULT '{}'::jsonb,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_poi_zone ON points_of_interest(zone_id);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_poi_geom ON points_of_interest USING GIST(geom);")
+
             conn.commit()
             logger.info("Database schema initialized")
     except Exception as e:
