@@ -1,287 +1,206 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useAuth } from "@/components/auth/AuthProvider";
 import { api } from "@/lib/constants";
-import { motion } from "framer-motion";
-import {
-  Map, Layers, BarChart3, Users, Trees, Shield,
-  AlertTriangle, Database, Activity, ChevronRight, Home,
-} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Layers, MapPin, Trees, Mountain, Calendar, ChevronRight } from "lucide-react";
 
-interface Zone {
-  id: number; name: string; type: string; state?: string;
-  area_ha?: number; metadata: Record<string, unknown>;
+const GISZoneMap = dynamic(() => import("@/components/map/GISZoneMap"), { ssr: false });
+
+interface ZoneFeature {
+  id: number; name: string; type: string; state?: string; area_ha?: number;
+  geojson: string; color: string; metadata: Record<string, unknown>;
 }
-interface Stats { zones: number; users: number; alerts: number }
 
-const PORTAL_TABS = [
-  { key: "overview", label: "Overview", icon: Home },
-  { key: "boundaries", label: "Boundaries", icon: Map },
-  { key: "alerts", label: "Alerts", icon: AlertTriangle },
-  { key: "analytics", label: "Analytics", icon: BarChart3 },
-];
+interface ZoneDetail {
+  id: number; name: string; type: string; state?: string; district?: string;
+  area_ha?: number; color: string; metadata: Record<string, unknown>;
+  children: Array<{ id: number; name: string; type: string }>;
+}
 
-const ZONE_LABELS: Record<string, string> = {
-  reserve: "Reserve",
-  buffer_zone: "Buffer Zone",
-  core_forest: "Core Forest",
-  eco_sensitive: "Eco-Sensitive Area",
-  beat_boundary: "Beat Boundary",
-  compartment: "Compartment",
+const TYPE_LABELS: Record<string, string> = {
+  reserve: "Reserve", buffer_zone: "Buffer Zone", core_forest: "Core Forest",
+  eco_sensitive: "Eco-Sensitive Area", beat_boundary: "Beat Boundary", compartment: "Compartment",
 };
 
-const ZONE_COLORS: Record<string, string> = {
-  reserve: "bg-blue-100 text-blue-700",
-  buffer_zone: "bg-amber-100 text-amber-700",
-  core_forest: "bg-emerald-100 text-emerald-700",
-  eco_sensitive: "bg-purple-100 text-purple-700",
-  beat_boundary: "bg-slate-100 text-slate-600",
-  compartment: "bg-sky-100 text-sky-700",
+const TYPE_COLORS: Record<string, string> = {
+  reserve: "#2563EB", buffer_zone: "#F59E0B", core_forest: "#16A34A",
+  eco_sensitive: "#7C3AED", beat_boundary: "#64748B", compartment: "#0EA5E9",
 };
 
 export default function GISPortalPage() {
-  const { user, isAuthenticated, isLoading, logout, getHeaders } = useAuth();
-  const router = useRouter();
-  const [tab, setTab] = useState("overview");
-  const [zones, setZones] = useState<Zone[]>([]);
-  const [stats, setStats] = useState<Stats | null>(null);
-  const [layerVisibility, setLayerVisibility] = useState<Record<string, boolean>>({});
+  const [zones, setZones] = useState<ZoneFeature[]>([]);
+  const [selected, setSelected] = useState<ZoneFeature | null>(null);
+  const [detail, setDetail] = useState<ZoneDetail | null>(null);
+  const [hiddenTypes, setHiddenTypes] = useState<Set<string>>(new Set());
+  const [dLoading, setDLoading] = useState(false);
 
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) router.push("/login");
-  }, [isLoading, isAuthenticated, router]);
-
-  const fetchData = useCallback(async () => {
-    const [zRes, sRes] = await Promise.all([
-      fetch(api("/api/v1/admin/zones"), { headers: getHeaders() }),
-      fetch(api("/api/v1/admin/stats"), { headers: getHeaders() }),
-    ]);
-    if (zRes.ok) {
-      const z = await zRes.json();
-      setZones(z);
-      const visibility: Record<string, boolean> = {};
-      z.forEach((zone: Zone) => { visibility[zone.id] = true; });
-      setLayerVisibility(visibility);
-    }
-    if (sRes.ok) setStats(await sRes.json());
-  }, [getHeaders]);
-
-  useEffect(() => {
-    if (isAuthenticated) fetchData();
-  }, [isAuthenticated, fetchData]);
-
-  const toggleLayer = (id: number) => {
-    setLayerVisibility((prev) => ({ ...prev, [id]: !prev[id] }));
+  const toggleType = (t: string) => {
+    setHiddenTypes((prev) => {
+      const next = new Set(prev);
+      next.has(t) ? next.delete(t) : next.add(t);
+      return next;
+    });
   };
 
-  const zonesByType = zones.reduce((acc: Record<string, Zone[]>, z: Zone) => {
-    (acc[z.type] = acc[z.type] || []).push(z);
-    return acc;
-  }, {});
+  const onZoneClick = useCallback(async (z: ZoneFeature) => {
+    setSelected(z);
+    setDLoading(true);
+    setDetail(null);
+    try {
+      const r = await fetch(api(`/api/v1/gis/zones/${z.id}`));
+      if (r.ok) setDetail(await r.json());
+    } catch {} finally { setDLoading(false); }
+  }, []);
 
-  if (isLoading) {
-    return <div className="flex min-h-screen items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" /></div>;
-  }
-  if (!isAuthenticated) return null;
+  const close = () => { setSelected(null); setDetail(null); };
+
+  const typeCounts: Record<string, number> = {};
+  zones.forEach((z) => { typeCounts[z.type] = (typeCounts[z.type] || 0) + 1; });
+  const typesSorted = Object.entries(typeCounts).sort(([, a], [, b]) => b - a);
 
   return (
-    <div className="min-h-[calc(100vh-64px)] bg-[#F8FAFC]">
-      {/* Header */}
-      <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+    <div className="relative h-[calc(100vh-64px)] w-full overflow-hidden">
+      <GISZoneMap onZonesLoaded={setZones} onZoneClick={onZoneClick} hiddenTypes={hiddenTypes} />
+
+      {/* Top bar */}
+      <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-white/95 to-white/80 backdrop-blur-xl border-b border-slate-200/60 px-6 py-3">
+        <div className="flex items-center justify-between max-w-full">
           <div>
-            <h1 className="text-[18px] font-bold text-slate-900">Web GIS Decision Support Platform</h1>
-            <p className="text-[12px] text-slate-500 mt-0.5">
-              Forest boundary visualisation · GIS layer management · Analytical reports
-            </p>
+            <h1 className="text-[18px] font-bold text-slate-900 tracking-tight">GIS Decision Support Platform</h1>
+            <p className="text-[12px] text-slate-500">{zones.length} zones · 6 layer types · PostGIS spatial database</p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-[12px] text-slate-400">{user?.email} ({user?.role})</span>
-            <button onClick={logout} className="text-[12px] font-medium text-slate-500 hover:text-red-600">Logout</button>
+          <div className="flex items-center gap-4">
+            {[{ label: "Zones", value: zones.length }, { label: "Layers", value: Object.keys(typeCounts).length }, { label: "States", value: new Set(zones.map((z) => z.state).filter(Boolean)).size }].map((s) => (
+              <div key={s.label} className="text-center">
+                <p className="text-[20px] font-black tabular-nums text-slate-800 leading-tight">{s.value}</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{s.label}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-6 flex gap-0">
-          {PORTAL_TABS.map((t) => (
+      {/* Layer toggle panel */}
+      <div className="absolute top-20 right-4 z-10 rounded-2xl bg-white/95 backdrop-blur-xl px-4 py-3 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/70 w-52">
+        <div className="flex items-center gap-2 mb-3">
+          <Layers className="h-4 w-4 text-blue-600" />
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Layer Manager</p>
+        </div>
+        <div className="space-y-1">
+          {typesSorted.map(([t, count]) => (
             <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`flex items-center gap-2 px-5 py-3 text-[13px] font-medium border-b-2 transition-colors ${
-                tab === t.key ? "border-blue-600 text-blue-600" : "border-transparent text-slate-500 hover:text-slate-700"
+              key={t}
+              onClick={() => toggleType(t)}
+              className={`flex items-center gap-2.5 w-full rounded-lg px-2.5 py-2 text-left transition-all duration-150 ${
+                !hiddenTypes.has(t) ? "bg-slate-50" : "opacity-40"
               }`}
             >
-              <t.icon className="h-3.5 w-3.5" />
-              {t.label}
+              <span className="h-3 w-3 rounded ring-1 ring-offset-1 ring-white shrink-0" style={{ background: TYPE_COLORS[t] || "#94A3B8" }} />
+              <span className="text-[12px] font-medium text-slate-700 flex-1 truncate">{TYPE_LABELS[t] || t}</span>
+              <span className="text-[10px] font-bold tabular-nums text-slate-400">{count}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-6">
-        {/* Overview Tab */}
-        {tab === "overview" && (
-          <div className="space-y-6">
-            {/* Stats */}
-            {stats && (
-              <div className="grid grid-cols-4 gap-4">
-                {[
-                  { label: "Total Zones", value: stats.zones, icon: Map, color: "text-blue-600", bg: "bg-blue-50" },
-                  { label: "GIS Layers", value: Object.keys(zonesByType).length, icon: Layers, color: "text-emerald-600", bg: "bg-emerald-50" },
-                  { label: "Active Alerts", value: stats.alerts, icon: Activity, color: "text-orange-600", bg: "bg-orange-50" },
-                  { label: "Users", value: stats.users, icon: Users, color: "text-purple-600", bg: "bg-purple-50" },
-                ].map((s) => (
-                  <div key={s.label} className={`${s.bg} rounded-xl p-5`}>
-                    <s.icon className={`h-5 w-5 ${s.color} mb-3`} />
-                    <p className="text-[32px] font-black tabular-nums text-slate-800">{s.value}</p>
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mt-1">{s.label}</p>
+      {/* Legend */}
+      <div className="absolute bottom-4 left-4 z-10 rounded-xl bg-white/95 backdrop-blur-xl px-4 py-3 shadow-lg ring-1 ring-slate-200/70">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Zone Types</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-1.5">
+          {typesSorted.map(([t]) => (
+            <div key={t} className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full ring-1 ring-offset-1 ring-white" style={{ background: TYPE_COLORS[t] || "#94A3B8" }} />
+              <span className="text-[12px] text-slate-600">{TYPE_LABELS[t] || t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Detail panel */}
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            initial={{ x: 400 }} animate={{ x: 0 }} exit={{ x: 400 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="absolute top-0 right-0 z-20 h-full w-[400px] overflow-y-auto bg-white shadow-2xl border-l border-slate-200/80"
+          >
+            <div className="sticky top-0 bg-white/95 backdrop-blur-xl z-10 border-b border-slate-100 px-5 py-4 flex items-center justify-between">
+              <div className="flex-1 min-w-0">
+                <h2 className="text-[16px] font-bold text-slate-900 truncate">{selected.name}</h2>
+                <span className="inline-flex items-center gap-1.5 mt-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold"
+                  style={{ background: selected.color + "20", color: selected.color }}>
+                  {TYPE_LABELS[selected.type] || selected.type}
+                </span>
+              </div>
+              <button onClick={close} className="text-slate-400 hover:text-slate-600 p-2 rounded-xl hover:bg-slate-100"><X className="h-5 w-5" /></button>
+            </div>
+
+            {dLoading && <div className="flex justify-center py-16"><div className="h-6 w-6 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" /></div>}
+
+            {detail && (
+              <div className="p-5 space-y-4">
+                {/* Meta grid */}
+                <div className="grid grid-cols-2 gap-3">
+                  {detail.state && (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5">
+                      <MapPin className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">State</p><p className="text-[13px] font-semibold text-slate-700">{detail.state}</p></div>
+                    </div>
+                  )}
+                  {detail.district && (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5">
+                      <MapPin className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">District</p><p className="text-[13px] font-semibold text-slate-700">{detail.district}</p></div>
+                    </div>
+                  )}
+                  {detail.area_ha && (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5">
+                      <Trees className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">Area</p><p className="text-[13px] font-semibold text-slate-700">{detail.area_ha >= 1000 ? `${(detail.area_ha / 1000).toFixed(0)}k` : detail.area_ha.toFixed(0)} ha</p></div>
+                    </div>
+                  )}
+                  {detail.metadata?.elevation ? (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5">
+                      <Mountain className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">Elevation</p><p className="text-[13px] font-semibold text-slate-700">{String(detail.metadata.elevation)}</p></div>
+                    </div>
+                  ) : null}
+                  {detail.metadata?.forest_type ? (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5 col-span-2">
+                      <Trees className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">Forest Type</p><p className="text-[13px] font-semibold text-slate-700">{String(detail.metadata.forest_type)}</p></div>
+                    </div>
+                  ) : null}
+                  {detail.metadata?.fire_season ? (
+                    <div className="rounded-xl bg-slate-50 p-3 flex items-center gap-2.5">
+                      <Calendar className="h-4 w-4 text-slate-400 shrink-0" />
+                      <div><p className="text-[10px] uppercase tracking-wider text-slate-400">Fire Season</p><p className="text-[13px] font-semibold text-slate-700">{String(detail.metadata.fire_season)}</p></div>
+                    </div>
+                  ) : null}
+                </div>
+
+                {/* Children */}
+                {detail.children.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-2">Sub-zones ({detail.children.length})</p>
+                    <div className="space-y-1">
+                      {detail.children.map((c) => (
+                        <div key={c.id} className="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
+                          <ChevronRight className="h-3.5 w-3.5 text-slate-400" />
+                          <span className="text-[13px] font-medium text-slate-700 flex-1">{c.name}</span>
+                          <span className="text-[10px] text-slate-400">{TYPE_LABELS[c.type] || c.type}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
               </div>
             )}
-
-            {/* Zone hierarchy summary */}
-            <div className="rounded-2xl bg-white ring-1 ring-slate-200/60 p-6">
-              <h2 className="text-[14px] font-bold text-slate-800 mb-4">Forest Management Hierarchy</h2>
-              <div className="grid grid-cols-3 gap-4">
-                {["reserve", "buffer_zone", "core_forest", "eco_sensitive", "beat_boundary", "compartment"].map((ztype) => (
-                  <div key={ztype} className="rounded-xl border border-slate-100 p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${ZONE_COLORS[ztype] || "bg-slate-100 text-slate-600"}`}>
-                        {ZONE_LABELS[ztype] || ztype}
-                      </span>
-                      <span className="text-[20px] font-bold tabular-nums text-slate-700">
-                        {(zonesByType[ztype] || []).length}
-                      </span>
-                    </div>
-                    <div className="space-y-1">
-                      {(zonesByType[ztype] || []).slice(0, 3).map((z) => (
-                        <p key={z.id} className="text-[11px] text-slate-500 truncate">{z.name}</p>
-                      ))}
-                      {(zonesByType[ztype] || []).length > 3 && (
-                        <p className="text-[10px] text-slate-400">+{(zonesByType[ztype] || []).length - 3} more</p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          </motion.div>
         )}
-
-        {/* Boundaries Tab */}
-        {tab === "boundaries" && (
-          <div className="space-y-4">
-            {/* Legend */}
-            <div className="flex flex-wrap gap-3 mb-4">
-              {Object.entries(ZONE_LABELS).map(([key, label]) => (
-                <div key={key} className="flex items-center gap-2">
-                  <span className={`h-3 w-3 rounded ${key === "reserve" ? "bg-blue-500" : key === "buffer_zone" ? "bg-amber-500" : key === "core_forest" ? "bg-emerald-500" : key === "eco_sensitive" ? "bg-purple-500" : key === "beat_boundary" ? "bg-slate-400" : "bg-sky-400"}`} />
-                  <span className="text-[12px] text-slate-600">{label}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Zone-type sections */}
-            {Object.entries(zonesByType).map(([ztype, zoneList]) => (
-              <div key={ztype} className="rounded-xl bg-white ring-1 ring-slate-200/60 overflow-hidden">
-                <div className="px-5 py-3 flex items-center justify-between border-b border-slate-100 bg-slate-50/50">
-                  <div className="flex items-center gap-2">
-                    <Trees className="h-4 w-4 text-slate-500" />
-                    <span className="text-[13px] font-semibold text-slate-700">{ZONE_LABELS[ztype] || ztype}s</span>
-                    <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-medium text-slate-500">{zoneList.length}</span>
-                  </div>
-                </div>
-                <div className="divide-y divide-slate-50">
-                  {zoneList.map((z) => (
-                    <div key={z.id} className="flex items-center justify-between px-5 py-3 hover:bg-slate-50/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => toggleLayer(z.id)}
-                          className={`h-4 w-4 rounded border-2 transition-colors ${layerVisibility[z.id] ? "border-blue-500 bg-blue-500" : "border-slate-300"}`}
-                        />
-                        <div>
-                          <p className="text-[13px] font-medium text-slate-700">{z.name}</p>
-                          <p className="text-[11px] text-slate-400">{z.state || ""} {z.area_ha ? `· ${(z.area_ha/1000).toFixed(1)}k ha` : ""}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {z.metadata?.forest_type ? (
-                          <span className="text-[10px] text-slate-400 truncate max-w-[200px]">{String(z.metadata.forest_type)}</span>
-                        ) : null}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Alerts Tab */}
-        {tab === "alerts" && (
-          <div className="rounded-2xl bg-white ring-1 ring-slate-200/60 p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <AlertTriangle className="h-5 w-5 text-amber-500" />
-              <h2 className="text-[14px] font-bold text-slate-800">Geo-Fence Alert History</h2>
-            </div>
-            <p className="text-[13px] text-slate-500 mb-4">
-              Fire detection alerts triggered within monitored forest boundaries. Alerts are generated when NASA FIRMS satellite
-              detections fall within geo-fence zones.
-            </p>
-            <div className="rounded-lg bg-slate-50 p-4 text-center">
-              <Database className="mx-auto h-6 w-6 text-slate-300 mb-2" />
-              <p className="text-[13px] text-slate-500">{stats?.alerts || 0} alerts recorded in database</p>
-              <p className="text-[11px] text-slate-400 mt-1">Alert data persists across container restarts via NeonDB Postgres.</p>
-            </div>
-          </div>
-        )}
-
-        {/* Analytics Tab */}
-        {tab === "analytics" && (
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-white ring-1 ring-slate-200/60 p-6">
-              <h2 className="text-[14px] font-bold text-slate-800 mb-4">Zone Distribution by State</h2>
-              <div className="space-y-3">
-                {Object.entries(
-                  zones.reduce((acc: Record<string, number>, z: Zone) => {
-                    const state = z.state || "Unknown";
-                    acc[state] = (acc[state] || 0) + 1;
-                    return acc;
-                  }, {})
-                ).sort(([, a], [, b]) => b - a).map(([state, count]) => (
-                  <div key={state} className="flex items-center gap-3">
-                    <span className="w-28 text-[12px] font-medium text-slate-600">{state}</span>
-                    <div className="flex-1 h-5 rounded-md bg-slate-100 overflow-hidden">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(count / zones.length) * 100}%` }}
-                        className="h-full rounded-md bg-blue-600"
-                      />
-                    </div>
-                    <span className="text-[12px] font-bold tabular-nums text-slate-600">{count}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-2xl bg-white ring-1 ring-slate-200/60 p-6">
-              <h2 className="text-[14px] font-bold text-slate-800 mb-4">System Status</h2>
-              <div className="grid grid-cols-2 gap-4 text-[13px]">
-                <div className="flex justify-between py-2 border-b border-slate-50"><span className="text-slate-500">Database</span><span className="font-medium text-emerald-600">NeonDB Postgres + PostGIS</span></div>
-                <div className="flex justify-between py-2 border-b border-slate-50"><span className="text-slate-500">Spatial Index</span><span className="font-medium text-emerald-600">GiST (zones, alerts)</span></div>
-                <div className="flex justify-between py-2 border-b border-slate-50"><span className="text-slate-500">Auth Method</span><span className="font-medium text-slate-700">JWT HS256</span></div>
-                <div className="flex justify-between py-2 border-b border-slate-50"><span className="text-slate-500">GIS Layers</span><span className="font-medium text-slate-700">6 types, {zones.length} zones</span></div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
