@@ -100,6 +100,31 @@ def start_monitoring_scheduler():
     logger.info("Monitoring scheduler started")
 
 
+@router.get("/export/csv")
+def export_csv(zone_id: int = None):
+    if zone_id:
+        rows = query(
+            "SELECT * FROM monitoring_scans WHERE zone_id = %s ORDER BY created_at DESC",
+            (zone_id,),
+        )
+    else:
+        rows = query("SELECT * FROM monitoring_scans ORDER BY created_at DESC LIMIT 100")
+
+    if not rows:
+        return "No data"
+
+    header = "id,zone_id,before_year,after_year,before_ndvi,after_ndvi,ndvi_change,severity,confidence,affected_area_ha,data_source,created_at\n"
+    body = "\n".join(
+        f"{r['id']},{r['zone_id']},{r['before_year']},{r['after_year']},"
+        f"{r['before_ndvi']},{r['after_ndvi']},{r['ndvi_change']},"
+        f"{r['severity']},{r['confidence']},{r['affected_area_ha']},"
+        f"{r['data_source']},{r['created_at'].isoformat()}"
+        for r in rows
+    )
+    from fastapi.responses import Response
+    return Response(content=header + body, media_type="text/csv", headers={"Content-Disposition": "attachment; filename=monitoring_report.csv"})
+
+
 @router.get("/provider")
 def get_provider_info():
     p = get_provider()
