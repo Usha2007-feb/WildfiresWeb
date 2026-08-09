@@ -156,19 +156,160 @@ class DemoProvider(SatelliteProvider):
 
 
 class SentinelHubProvider(SatelliteProvider):
+    TOKEN_URL = "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
+    STATS_URL = "https://services.sentinel-hub.com/api/v1/statistics"
+
     def __init__(self):
         self.client_id = os.environ.get("SENTINEL_HUB_CLIENT_ID", "")
         self.client_secret = os.environ.get("SENTINEL_HUB_CLIENT_SECRET", "")
+        self._token = None
+        self._token_expiry = 0
 
     def get_source_name(self):
-        return "Sentinel-2 (ESA)"
+        return "Sentinel-2 (ESA Copernicus)"
 
     def is_available(self):
-        return bool(self.client_id and self.client_secret)
+        if not (self.client_id and self.client_secret):
+            return False
+        token = self._get_token()
+        return token is not None
 
-    def analyze_zone(self, zone_id: int, before_year: int, after_year: int) -> SatelliteScanResult | None:
-        """Placeholder — returns None when credentials unavailable, falls back to DemoProvider."""
+    def _get_token(self) -> str | None:
+        import time
+        now = time.time()
+        if self._token and now < self._token_expiry - 60:
+            return self._token
+
+        try:
+            import requests
+            r = requests.post(
+                self.TOKEN_URL,
+                data={
+                    "grant_type": "client_credentials",
+                    "client_id": self.client_id,
+                    "client_secret": self.client_secret,
+                },
+                timeout=15,
+            )
+            if r.status_code == 200:
+                data = r.json()
+                self._token = data["access_token"]
+                self._token_expiry = now + data.get("expires_in", 3600)
+                logger.info("Sentinel Hub authenticated")
+                return self._token
+            logger.warning(f"Sentinel Hub auth failed: {r.status_code} {r.text[:200]}")
+        except Exception as e:
+            logger.warning(f"Sentinel Hub auth error: {e}")
         return None
+
+    def _fetch_ndvi_stats(self, geojson: str, year: int) -> float | None:
+        token = self._get_token()
+        if not token:
+            return None
+
+        try:
+            import requests
+            body = {
+                "input": {
+                    "bounds": {"geometry": json.loads(geojson)},
+                    "data": [
+                        {
+                            "type": "sentinel-2-l2a",
+                            "dataFilter": {
+                                "timeRange": {
+                                    "from": f"{year}-01-01T00:00:00Z",
+                                    "to": f"{year}-12-31T23:59:59Z",
+                                },
+                                "maxCloudCoverage": 30,
+                            },
+                        }
+                    ],
+                },
+                "aggregation": {
+                    "timeRange": {
+                        "from": f"{year}-01-01T00:00:00Z",
+                        "to": f"{year}-12-31T23:59:59Z",
+                    },
+                    "aggregationInterval": {"of": "P1Y"},
+                    "evalscript": "//VERSION=3\nfunction setup(){return{input:['B04','B08'],output:{bands:1}}}\nfunction evaluatePixel(s){return[(s.B08-s.B04)/(s.B08+s.B04)]}",
+                    "resx": 20,
+                    "resy": 20,
+                },
+                "calculations": {"default": {"statistics": {"default": {"percentiles": {"k": [50]}}}}},
+            }
+
+            r = requests.post(
+                self.STATS_URL,
+                headers={"Authorization": f"Bearer {token}", "Content-Type": "application/json"},
+                json=body,
+                timeout=30,
+            )
+            if r.status_code == 200:
+                data = r.json()
+                stats = data.get("data", [])
+                if stats and stats[0].get("outputs", {}).get("default", {}).get("bands", {}).get("B0", {}).get("stats", {}).get("default", {}).get("percentiles", {}).get("50"):
+                    ndvi = stats[0]["outputs"]["default"]["bands"]["B0"]["stats"]["default"]["percentiles"]["50"]
+                    if ndvi is not None:
+                        return float(ndvi)
+            logger.warning(f"Sentinel Hub stats failed for {year}: {r.status_code}")
+        except Exception as e:
+            logger.warning(f"Sentinel Hub API error: {e}")
+        return None
+
+    def analyze_zone(self, zone_id: int, before_year: int = 2005, after_year: int = 2025) -> SatelliteScanResult | None:
+        from backend.services.database import query
+
+        rows = query("SELECT name, ST_AsGeoJSON(geom) as geojson, area_ha FROM zones WHERE id = %s AND geom IS NOT NULL", (zone_id,))
+        if not rows:
+            return None
+
+        zone_name = rows[0]["name"]
+        geojson = rows[0]["geojson"]
+        area_ha = rows[0]["area_ha"] or 1000
+
+        before_ndvi = self._fetch_ndvi_stats(geojson, before_year)
+        after_ndvi = self._fetch_ndvi_stats(geojson, after_year)
+
+        if before_ndvi is None or after_ndvi is None:
+            logger.info(f"Sentinel Hub data unavailable for {zone_name}, falling back to demo")
+            return DemoProvider().analyze_zone(zone_id, before_year, after_year)
+
+        change = after_ndvi - before_ndvi
+
+        severity = "none"
+        for sev, threshold in [("critical", 0.20), ("significant", 0.10), ("moderate", 0.05), ("minor", 0.02)]:
+            if abs(change) >= threshold:
+                severity = sev
+                break
+
+        change_type = "declining" if change < -0.02 else "improving" if change > 0.02 else "stable"
+        confidence = min(0.98, max(0.6, 0.75 + abs(change) * 8))
+        affected_ha = abs(change) * area_ha * 0.5 if change < 0 else 0
+
+        sample_polygons = []
+        if severity in ("critical", "significant"):
+            sample_polygons = _generate_sample_polygons(zone_id, area_ha, affected_ha)
+
+        summary = _build_summary(zone_name, change, affected_ha / max(1, area_ha) * 100, severity, before_year, after_year)
+
+        result = SatelliteScanResult()
+        result.zone_id = zone_id
+        result.zone_name = zone_name
+        result.before_year = before_year
+        result.after_year = after_year
+        result.before_ndvi = before_ndvi
+        result.after_ndvi = after_ndvi
+        result.ndvi_change = change
+        result.change_pct = change * 100
+        result.affected_area_ha = affected_ha
+        result.severity = severity
+        result.confidence = confidence
+        result.change_type = change_type
+        result.detected_at = datetime.now(timezone.utc).isoformat()
+        result.data_source = "sentinel-2"
+        result.change_polygons = sample_polygons
+        result.summary = summary
+        return result
 
 
 def _generate_sample_polygons(zone_id, area_ha, affected_ha):
