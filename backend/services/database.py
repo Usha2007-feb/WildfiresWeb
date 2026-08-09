@@ -136,6 +136,27 @@ def init_schema():
             cur.execute("CREATE INDEX IF NOT EXISTS idx_poi_zone ON points_of_interest(zone_id);")
             cur.execute("CREATE INDEX IF NOT EXISTS idx_poi_geom ON points_of_interest USING GIST(geom);")
 
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS monitoring_scans (
+                    id SERIAL PRIMARY KEY,
+                    zone_id INTEGER REFERENCES zones(id) ON DELETE CASCADE,
+                    before_year INTEGER NOT NULL,
+                    after_year INTEGER NOT NULL,
+                    before_ndvi REAL,
+                    after_ndvi REAL,
+                    ndvi_change REAL,
+                    severity VARCHAR(20),
+                    confidence REAL,
+                    change_type VARCHAR(20),
+                    affected_area_ha REAL DEFAULT 0,
+                    data_source VARCHAR(100),
+                    summary TEXT,
+                    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+                );
+            """)
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_scan_zone ON monitoring_scans(zone_id);")
+            cur.execute("CREATE INDEX IF NOT EXISTS idx_scan_date ON monitoring_scans(created_at);")
+
             conn.commit()
             logger.info("Database schema initialized")
     except Exception as e:
