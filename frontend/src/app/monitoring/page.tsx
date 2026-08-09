@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Satellite, Activity, Calendar, TrendingDown, TrendingUp, Minus,
   AlertTriangle, CheckCircle2, Database, Zap, Clock, Shield,
-  Layers, BarChart3, MapPin, Target, Play, RefreshCw,
+  MapPin, Target, Play, RefreshCw, ScanLine,
 } from "lucide-react";
 
 const MonitorMap = dynamic(() => import("@/components/map/DeforestationMap"), { ssr: false });
@@ -61,6 +61,18 @@ export default function MonitoringPage() {
     } catch {} finally { setScanning(false); }
   }, [zoneId, beforeYear, afterYear]);
 
+  const runScanAll = useCallback(async () => {
+    setScanning(true);
+    try {
+      const r = await fetch(api("/api/v1/monitoring/scan-all?before_year=2005&after_year=2025"), { method: "POST", headers: { "Content-Type": "application/json" } });
+      if (r.ok) {
+        const d = await r.json();
+        if (d.results?.length > 0) setResult(d.results[0]);
+        fetch(api("/api/v1/monitoring/history?limit=10")).then((r2) => r2.json()).then(setHistory);
+      }
+    } catch {} finally { setScanning(false); }
+  }, []);
+
   const sev = result?.severity || "none";
   const scan = result;
 
@@ -82,6 +94,9 @@ export default function MonitoringPage() {
             )}
             <button onClick={runScan} disabled={scanning || !zoneId} className="flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-[13px] font-bold text-white hover:bg-blue-700 disabled:opacity-50 transition-all shadow-md shadow-blue-200">
               <Play className="h-4 w-4" />{scanning ? "Scanning..." : "Run Detection"}
+            </button>
+            <button onClick={runScanAll} disabled={scanning} className="flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-[12px] font-bold text-white hover:bg-emerald-700 disabled:opacity-50 transition-all shadow-md shadow-emerald-200">
+              <ScanLine className="h-4 w-4" />Scan All Reserves
             </button>
           </div>
         </div>

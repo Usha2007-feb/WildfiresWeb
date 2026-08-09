@@ -32,3 +32,4 @@ def require_role(*roles: str):
 
 
 require_admin = require_role("admin")
+require_analyst = require_role("admin", "analyst")

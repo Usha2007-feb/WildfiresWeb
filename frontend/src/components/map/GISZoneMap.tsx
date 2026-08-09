@@ -19,6 +19,9 @@ interface Props {
   onZonesLoaded: (zones: ZoneFeature[]) => void;
   onZoneClick: (zone: ZoneFeature) => void;
   hiddenTypes: Set<string>;
+  satelliteVisible: boolean;
+  satelliteOpacity: number;
+  showNDVI: boolean;
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -35,11 +38,13 @@ const POI_LABELS: Record<string, string> = {
   fire_station: "Fire Station", camp: "Field Camp", checkpoint: "Checkpoint",
 };
 
-export default function GISZoneMap({ onZonesLoaded, onZoneClick, hiddenTypes }: Props) {
+export default function GISZoneMap({ onZonesLoaded, onZoneClick, hiddenTypes, satelliteVisible, satelliteOpacity, showNDVI }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const layersRef = useRef<Map<number, L.GeoJSON>>(new Map());
   const poiMarkersRef = useRef<L.LayerGroup>(L.layerGroup());
+  const satLayerRef = useRef<L.TileLayer | null>(null);
+  const ndviLayerRef = useRef<L.TileLayer | null>(null);
   const [pois, setPois] = useState<POI[]>([]);
 
   useEffect(() => {
@@ -138,6 +143,36 @@ export default function GISZoneMap({ onZonesLoaded, onZoneClick, hiddenTypes }: 
       }
     });
   }, [hiddenTypes]);
+
+  // Satellite layer toggle
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const url = `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/2025-07-01/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`;
+    if (satelliteVisible) {
+      if (!satLayerRef.current) {
+        satLayerRef.current = L.tileLayer(url, { attribution: "NASA GIBS MODIS", opacity: satelliteOpacity, maxZoom: 14, zIndex: 1 }).addTo(mapRef.current);
+      }
+      if (satLayerRef.current) satLayerRef.current.setOpacity(satelliteOpacity);
+    } else {
+      if (satLayerRef.current) { mapRef.current.removeLayer(satLayerRef.current); satLayerRef.current = null; }
+    }
+  }, [satelliteVisible, satelliteOpacity]);
+
+  // NDVI layer toggle
+  useEffect(() => {
+    if (!mapRef.current) return;
+    if (showNDVI) {
+      const date = "2025-07-01";
+      if (!ndviLayerRef.current) {
+        ndviLayerRef.current = L.tileLayer(
+          `https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/${date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg`,
+          { attribution: "NASA MODIS", opacity: 0.5, maxZoom: 14, zIndex: 2 }
+        ).addTo(mapRef.current);
+      }
+    } else {
+      if (ndviLayerRef.current) { mapRef.current.removeLayer(ndviLayerRef.current); ndviLayerRef.current = null; }
+    }
+  }, [showNDVI]);
 
   return <div ref={containerRef} className="absolute inset-0 z-0" />;
 }

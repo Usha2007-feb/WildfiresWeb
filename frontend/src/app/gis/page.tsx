@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { api } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Layers, MapPin, Trees, Mountain, Calendar, ChevronRight } from "lucide-react";
+import { X, Layers, MapPin, Trees, Mountain, Calendar, ChevronRight, Satellite, Eye, Flame } from "lucide-react";
 
 const GISZoneMap = dynamic(() => import("@/components/map/GISZoneMap"), {
   ssr: false,
@@ -38,6 +38,9 @@ export default function GISPortalPage() {
   const [detail, setDetail] = useState<ZoneDetail | null>(null);
   const [hiddenTypes, setHiddenTypes] = useState<Set<string>>(new Set());
   const [dLoading, setDLoading] = useState(false);
+  const [satelliteVisible, setSatelliteVisible] = useState(false);
+  const [satelliteOpacity, setSatelliteOpacity] = useState(0.8);
+  const [showNDVI, setShowNDVI] = useState(false);
 
   const toggleType = (t: string) => {
     setHiddenTypes((prev) => {
@@ -65,7 +68,7 @@ export default function GISPortalPage() {
 
   return (
     <div className="relative h-[calc(100vh-64px)] w-full overflow-hidden">
-      <GISZoneMap onZonesLoaded={setZones} onZoneClick={onZoneClick} hiddenTypes={hiddenTypes} />
+      <GISZoneMap onZonesLoaded={setZones} onZoneClick={onZoneClick} hiddenTypes={hiddenTypes} satelliteVisible={satelliteVisible} satelliteOpacity={satelliteOpacity} showNDVI={showNDVI} />
 
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-white/95 to-white/80 backdrop-blur-xl border-b border-slate-200/60 px-6 py-3">
@@ -203,8 +206,27 @@ export default function GISPortalPage() {
                           <span className="text-[13px] font-medium text-slate-700 flex-1">{c.name}</span>
                           <span className="text-[10px] text-slate-400">{TYPE_LABELS[c.type] || c.type}</span>
                         </div>
-                      ))}
-                    </div>
+          ))}
+        </div>
+        <div className="mt-3 pt-3 border-t border-slate-100 space-y-1.5">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Imagery Layers</p>
+          <button onClick={() => setSatelliteVisible(!satelliteVisible)} className={`flex items-center gap-2.5 w-full rounded-lg px-2.5 py-2 text-left transition-all duration-150 ${satelliteVisible ? "bg-blue-50" : ""}`}>
+            <Satellite className="h-3.5 w-3.5 text-blue-500" />
+            <span className="text-[12px] font-medium text-slate-700 flex-1">Satellite (MODIS)</span>
+            <span className={`h-3 w-3 rounded-full ring-1 ring-offset-1 ${satelliteVisible ? "bg-blue-500 ring-blue-200" : "bg-slate-200 ring-slate-300"}`} />
+          </button>
+          {satelliteVisible && (
+            <div className="px-2">
+              <input type="range" min="10" max="100" value={satelliteOpacity * 100} onChange={(e) => setSatelliteOpacity(Number(e.target.value) / 100)} className="w-full h-1 accent-blue-500" />
+              <span className="text-[10px] text-slate-400">{Math.round(satelliteOpacity * 100)}% opacity</span>
+            </div>
+          )}
+          <button onClick={() => setShowNDVI(!showNDVI)} className={`flex items-center gap-2.5 w-full rounded-lg px-2.5 py-2 text-left transition-all duration-150 ${showNDVI ? "bg-emerald-50" : ""}`}>
+            <Eye className="h-3.5 w-3.5 text-emerald-500" />
+            <span className="text-[12px] font-medium text-slate-700 flex-1">Vegetation (MODIS)</span>
+            <span className={`h-3 w-3 rounded-full ring-1 ring-offset-1 ${showNDVI ? "bg-emerald-500 ring-emerald-200" : "bg-slate-200 ring-slate-300"}`} />
+          </button>
+        </div>
                   </div>
                 )}
               </div>
