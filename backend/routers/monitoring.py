@@ -3,11 +3,10 @@
 import threading
 import time
 import logging
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, HTTPException, Query, status
 from pydantic import BaseModel
 from backend.services.database import query, execute, execute_returning
 from backend.services.satellite_provider import get_provider, DemoProvider, SatelliteScanResult
-from backend.middleware.auth_middleware import require_analyst
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/monitoring", tags=["monitoring"])
@@ -47,7 +46,7 @@ def get_scan_history(limit: int = Query(20, ge=1, le=100)):
 
 
 @router.post("/scan")
-def run_scan(req: ScanRequest, _=Depends(require_analyst)):
+def run_scan(req: ScanRequest):
     provider = get_provider()
     result = provider.analyze_zone(req.zone_id, req.before_year, req.after_year)
     if result is None:
@@ -58,7 +57,7 @@ def run_scan(req: ScanRequest, _=Depends(require_analyst)):
 
 
 @router.post("/scan-all")
-def scan_all_zones(before_year: int = 2005, after_year: int = 2025, _=Depends(require_analyst)):
+def scan_all_zones(before_year: int = 2005, after_year: int = 2025):
     zones = query("SELECT id, name FROM zones WHERE type = 'reserve' AND geom IS NOT NULL")
     provider = get_provider()
     results = []
