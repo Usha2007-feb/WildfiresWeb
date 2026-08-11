@@ -114,7 +114,7 @@ export default function MonitoringPage() {
               <p className="text-[12px] text-slate-500 leading-relaxed">
                 {provider?.available
                   ? `Live satellite data from ${provider.name}. NDVI computed from Sentinel-2 MSI bands.`
-                  : `${provider?.name || "Demo"} vegetation data. Based on 21 years of modeled NDVI values with realistic decline patterns.`}
+                  : `${provider?.name || "Vegetation"} data. Based on 21 years of modeled NDVI values with realistic decline patterns.`}
               </p>
             </div>
           </div>
@@ -195,10 +195,10 @@ export default function MonitoringPage() {
                 <div className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3 ring-1 ring-slate-200/60">
                   <Database className="h-4 w-4 text-slate-400" />
                   <div className="flex-1">
-                    <p className="text-[11px] font-medium text-slate-600">Data Source: {scan.data_source === "demo" ? "Modeled Vegetation History (21-year DB)" : scan.data_source}</p>
+                    <p className="text-[11px] font-medium text-slate-600">Data Source: {scan.data_source}</p>
                     <p className="text-[10px] text-slate-400">Analysis run at {new Date(scan.detected_at).toLocaleString()}</p>
                   </div>
-                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-600">{scan.data_source === "demo" ? "DEMO DATA" : "SATELLITE"}</span>
+                  <span className="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-bold text-blue-600">{scan.data_source.includes("sentinel") ? "SATELLITE" : "VEGETATION"}</span>
                 </div>
               </motion.div>
             )}
