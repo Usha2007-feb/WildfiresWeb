@@ -1,0 +1,215 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "core_zone",
+        "name": "Corbett Core Zone (Dhikala)",
+        "management_unit": "Dhikala Range",
+        "area_sqkm": 520,
+        "protection_level": "strict",
+        "description": "No public access; highest biodiversity density zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.08, 29.32], [79.14, 29.33], [79.20, 29.35], [79.26, 29.38],
+          [79.30, 29.42], [79.28, 29.46], [79.24, 29.49], [79.18, 29.50],
+          [79.12, 29.49], [79.08, 29.46], [79.06, 29.42], [79.06, 29.37],
+          [79.08, 29.32]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "buffer_zone",
+        "name": "Corbett Buffer Zone",
+        "management_unit": "Mixed Ranges",
+        "area_sqkm": 466,
+        "protection_level": "moderate",
+        "description": "Limited regulated activities permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.05, 29.28], [79.14, 29.28], [79.25, 29.30], [79.35, 29.33],
+          [79.44, 29.37], [79.48, 29.43], [79.46, 29.50], [79.40, 29.54],
+          [79.30, 29.55], [79.18, 29.53], [79.08, 29.50], [79.00, 29.46],
+          [78.99, 29.40], [79.02, 29.33], [79.05, 29.28]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "eco_sensitive_zone",
+        "name": "Corbett Eco-Sensitive Zone",
+        "management_unit": "Peripheral",
+        "area_sqkm": 332,
+        "protection_level": "low",
+        "description": "Controlled development; eco-tourism permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.00, 29.25], [79.10, 29.25], [79.22, 29.26], [79.35, 29.28],
+          [79.46, 29.32], [79.50, 29.38], [79.50, 29.45], [79.47, 29.52],
+          [79.40, 29.56], [79.27, 29.56], [79.14, 29.55], [79.03, 29.52],
+          [78.96, 29.45], [78.96, 29.37], [78.99, 29.30], [79.00, 29.25]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "core_zone",
+        "name": "Similipal Core Zone (Tiger Reserve)",
+        "management_unit": "Nawana Range",
+        "area_sqkm": 845,
+        "protection_level": "strict",
+        "description": "Tiger core area; no human activity permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.20, 22.10], [86.30, 22.12], [86.40, 22.16], [86.50, 22.20],
+          [86.55, 22.26], [86.52, 22.32], [86.46, 22.37], [86.38, 22.40],
+          [86.28, 22.40], [86.20, 22.37], [86.14, 22.32], [86.12, 22.26],
+          [86.14, 22.20], [86.18, 22.14], [86.20, 22.10]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "buffer_zone",
+        "name": "Similipal Buffer Zone",
+        "management_unit": "Baripada, Khadgarh Ranges",
+        "area_sqkm": 1060,
+        "protection_level": "moderate",
+        "description": "Regulated grazing and collection permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.12, 22.04], [86.25, 22.04], [86.40, 22.07], [86.56, 22.12],
+          [86.64, 22.18], [86.66, 22.26], [86.62, 22.36], [86.54, 22.43],
+          [86.42, 22.46], [86.28, 22.44], [86.15, 22.40], [86.08, 22.34],
+          [86.06, 22.26], [86.08, 22.17], [86.10, 22.08], [86.12, 22.04]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "eco_sensitive_zone",
+        "name": "Similipal Eco-Sensitive Zone",
+        "management_unit": "Peripheral Villages",
+        "area_sqkm": 845,
+        "protection_level": "low",
+        "description": "Fringe area with regulated agriculture and eco-tourism"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.08, 22.00], [86.22, 22.00], [86.38, 22.02], [86.56, 22.08],
+          [86.68, 22.14], [86.70, 22.24], [86.68, 22.34], [86.62, 22.42],
+          [86.50, 22.46], [86.36, 22.47], [86.20, 22.44], [86.08, 22.38],
+          [86.04, 22.28], [86.04, 22.18], [86.06, 22.08], [86.08, 22.00]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "jyotikuchi",
+        "zone_type": "core_zone",
+        "name": "Jyotikuchi Core Hill Area",
+        "management_unit": "Dhopolia Hill Core",
+        "area_sqkm": 28,
+        "protection_level": "strict",
+        "description": "Dense forest hilltop with restricted entry"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.70, 26.10], [91.74, 26.10], [91.78, 26.12], [91.81, 26.15],
+          [91.82, 26.19], [91.80, 26.22], [91.76, 26.24], [91.72, 26.24],
+          [91.69, 26.22], [91.68, 26.18], [91.68, 26.14], [91.70, 26.11],
+          [91.70, 26.10]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "jyotikuchi",
+        "zone_type": "buffer_zone",
+        "name": "Jyotikuchi Buffer (Guwahati Fringe)",
+        "management_unit": "Kamrup Range",
+        "area_sqkm": 35,
+        "protection_level": "moderate",
+        "description": "Urban-forest interface; no permanent structures"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.66, 26.07], [91.72, 26.07], [91.79, 26.09], [91.84, 26.13],
+          [91.86, 26.18], [91.85, 26.23], [91.81, 26.27], [91.75, 26.28],
+          [91.69, 26.27], [91.65, 26.23], [91.64, 26.18], [91.65, 26.12],
+          [91.66, 26.07]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "laisong",
+        "zone_type": "core_zone",
+        "name": "Laisong Reserved Forest Core",
+        "management_unit": "Laisong Range Core",
+        "area_sqkm": 150,
+        "protection_level": "strict",
+        "description": "Dense tropical mixed forest; closed to extraction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.84, 25.74], [92.90, 25.74], [92.97, 25.76], [93.02, 25.80],
+          [93.04, 25.85], [93.02, 25.90], [92.97, 25.94], [92.91, 25.96],
+          [92.85, 25.95], [92.81, 25.91], [92.80, 25.86], [92.81, 25.80],
+          [92.84, 25.74]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "laisong",
+        "zone_type": "buffer_zone",
+        "name": "Laisong Buffer (Jatinga Corridor)",
+        "management_unit": "Haflong Range",
+        "area_sqkm": 180,
+        "protection_level": "moderate",
+        "description": "Includes Jatinga valley; seasonal bird migration corridor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.80, 25.72], [92.88, 25.72], [92.98, 25.74], [93.05, 25.78],
+          [93.08, 25.84], [93.07, 25.90], [93.03, 25.96], [92.96, 25.99],
+          [92.88, 26.00], [92.81, 25.97], [92.78, 25.92], [92.77, 25.85],
+          [92.78, 25.78], [92.80, 25.72]
+        ]]
+      }
+    }
+  ]
+}

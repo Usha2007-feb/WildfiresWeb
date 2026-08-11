@@ -1,0 +1,133 @@
+{
+  "type": "FeatureCollection",
+  "name": "Laisong Reserved Forest GIS Layers",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Jatinga River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [92.85, 25.72], [92.88, 25.76], [92.91, 25.80],
+          [92.94, 25.85], [92.96, 25.90], [92.98, 25.96]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Diyung River (Tributary)", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [93.04, 25.80], [93.02, 25.84], [93.00, 25.88],
+          [92.98, 25.92], [92.97, 25.96]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Kapili River Upper Course", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [92.80, 25.82], [92.84, 25.84], [92.88, 25.85],
+          [92.92, 25.85], [92.96, 25.84]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Haflong Range Office (DFO Dima Hasao)" },
+      "geometry": { "type": "Point", "coordinates": [92.973, 25.166] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Laisong Beat Office" },
+      "geometry": { "type": "Point", "coordinates": [92.912, 25.840] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Laisong Hill Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [92.920, 25.852] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Jatinga Valley Fire Watch" },
+      "geometry": { "type": "Point", "coordinates": [92.938, 25.870] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Haflong Ridge Watch Post" },
+      "geometry": { "type": "Point", "coordinates": [92.880, 25.800] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Laisong Forest Entry (North)" },
+      "geometry": { "type": "Point", "coordinates": [92.888, 25.760] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Jatinga Check Gate" },
+      "geometry": { "type": "Point", "coordinates": [92.940, 25.860] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Jatinga Valley (Bird Mortality Site)" },
+      "geometry": { "type": "Point", "coordinates": [92.946, 25.865] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Laisong Village" },
+      "geometry": { "type": "Point", "coordinates": [92.912, 25.838] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Haflong Lake (Viewpoint)" },
+      "geometry": { "type": "Point", "coordinates": [93.020, 25.162] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Laisong Village Settlement" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.905, 25.832], [92.920, 25.832], [92.921, 25.845],
+          [92.918, 25.848], [92.905, 25.847], [92.903, 25.840], [92.905, 25.832]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Shifting Cultivation Fringe (Human Activity)" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.840, 25.770], [92.860, 25.770], [92.862, 25.788],
+          [92.855, 25.792], [92.840, 25.791], [92.838, 25.780], [92.840, 25.770]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Haflong–Laisong Forest Road" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [92.973, 25.166], [92.960, 25.300], [92.950, 25.450],
+          [92.940, 25.600], [92.930, 25.720], [92.920, 25.840]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Jatinga Valley Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [92.912, 25.840], [92.924, 25.852], [92.936, 25.862],
+          [92.946, 25.865]
+        ]
+      }
+    }
+  ]
+}

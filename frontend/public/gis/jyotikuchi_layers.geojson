@@ -1,0 +1,107 @@
+{
+  "type": "FeatureCollection",
+  "name": "Jyotikuchi Dhopolia Hill GIS Layers",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Bharalu River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [91.65, 26.12], [91.68, 26.14], [91.72, 26.15],
+          [91.76, 26.15], [91.80, 26.14], [91.84, 26.12]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Mora Bharalu Stream", "category": "stream" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [91.70, 26.22], [91.72, 26.20], [91.74, 26.18],
+          [91.75, 26.16], [91.76, 26.15]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Kamrup Forest Range Office" },
+      "geometry": { "type": "Point", "coordinates": [91.736, 26.185] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Dhopolia Hill Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [91.758, 26.195] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Urban Fringe Fire Watch Post" },
+      "geometry": { "type": "Point", "coordinates": [91.714, 26.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Jyotikuchi Forest Entry" },
+      "geometry": { "type": "Point", "coordinates": [91.700, 26.108] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Dhopolia Check Post" },
+      "geometry": { "type": "Point", "coordinates": [91.775, 26.208] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Dhopolia Hill Summit (575m)" },
+      "geometry": { "type": "Point", "coordinates": [91.762, 26.198] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Guwahati City Fringe (Urban Edge)" },
+      "geometry": { "type": "Point", "coordinates": [91.686, 26.112] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Jyotikuchi Residential Area" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.656, 26.075], [91.678, 26.075], [91.680, 26.095],
+          [91.676, 26.100], [91.658, 26.100], [91.655, 26.090], [91.656, 26.075]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Beltola Residential Settlement" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.658, 26.130], [91.674, 26.130], [91.675, 26.145],
+          [91.670, 26.148], [91.658, 26.147], [91.656, 26.138], [91.658, 26.130]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Guwahati–Dhopolia Forest Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [91.686, 26.112], [91.700, 26.125], [91.718, 26.148],
+          [91.736, 26.165], [91.752, 26.182], [91.762, 26.198]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Forest Perimeter Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [91.700, 26.108], [91.712, 26.108], [91.724, 26.110],
+          [91.736, 26.115], [91.748, 26.120], [91.760, 26.125]
+        ]
+      }
+    }
+  ]
+}

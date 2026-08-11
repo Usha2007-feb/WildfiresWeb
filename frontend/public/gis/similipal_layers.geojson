@@ -1,0 +1,131 @@
+{
+  "type": "FeatureCollection",
+  "name": "Similipal National Park GIS Layers",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Budhabalanga River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.60, 22.42], [86.55, 22.38], [86.48, 22.32], [86.42, 22.26],
+          [86.38, 22.20], [86.34, 22.14], [86.30, 22.08]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Deo River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.18, 22.40], [86.20, 22.35], [86.22, 22.28], [86.23, 22.22],
+          [86.24, 22.14], [86.25, 22.06]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Khairi River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.45, 22.32], [86.42, 22.28], [86.38, 22.24], [86.35, 22.18]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Barehipani Falls (399m)" },
+      "geometry": { "type": "Point", "coordinates": [86.299, 22.103] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Joranda Falls (181m)" },
+      "geometry": { "type": "Point", "coordinates": [86.278, 22.080] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Field Director Office – Baripada" },
+      "geometry": { "type": "Point", "coordinates": [86.318, 21.945] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Nawana Range Office" },
+      "geometry": { "type": "Point", "coordinates": [86.380, 22.280] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Pithabata Range Office" },
+      "geometry": { "type": "Point", "coordinates": [86.490, 22.200] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Jashipur Entry Gate" },
+      "geometry": { "type": "Point", "coordinates": [86.130, 22.088] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Pithabata Gate" },
+      "geometry": { "type": "Point", "coordinates": [86.540, 22.155] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Nawana Entry" },
+      "geometry": { "type": "Point", "coordinates": [86.360, 22.038] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Chahala Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [86.395, 22.280] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Joranda Watch Post" },
+      "geometry": { "type": "Point", "coordinates": [86.268, 22.088] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Bhanjabasa Fire Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [86.445, 22.220] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Similipal Tiger Reserve Core Plateau" },
+      "geometry": { "type": "Point", "coordinates": [86.380, 22.270] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Baripada Town" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.30, 21.92], [86.33, 21.92], [86.34, 21.95], [86.32, 21.96],
+          [86.30, 21.96], [86.29, 21.94], [86.30, 21.92]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Baripada–Nawana Forest Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.318, 21.945], [86.330, 22.000], [86.345, 22.060],
+          [86.358, 22.120], [86.368, 22.180], [86.375, 22.240], [86.380, 22.280]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Jashipur–Chahala Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.130, 22.088], [86.180, 22.120], [86.230, 22.170],
+          [86.290, 22.220], [86.350, 22.260], [86.395, 22.280]
+        ]
+      }
+    }
+  ]
+}

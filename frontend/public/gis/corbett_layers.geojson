@@ -1,0 +1,142 @@
+{
+  "type": "FeatureCollection",
+  "name": "Corbett National Park GIS Layers",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Ramganga River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.48, 29.42], [79.44, 29.42], [79.38, 29.41], [79.30, 29.40],
+          [79.22, 29.38], [79.14, 29.35], [79.08, 29.33], [79.03, 29.30]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Palain River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.38, 29.54], [79.36, 29.50], [79.34, 29.46], [79.32, 29.42],
+          [79.30, 29.38]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Mandal River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.20, 29.54], [79.18, 29.50], [79.16, 29.46], [79.14, 29.42],
+          [79.14, 29.38]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Sonanadi River", "category": "river" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.05, 29.48], [79.06, 29.44], [79.08, 29.40], [79.10, 29.36]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "water", "name": "Dhikala Chaur (Grassland Lake)", "category": "waterbody" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.20, 29.44], [79.22, 29.44], [79.23, 29.45], [79.22, 29.46],
+          [79.20, 29.46], [79.19, 29.45], [79.20, 29.44]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "office", "name": "Dhikala Forest Rest House & Range Office" },
+      "geometry": { "type": "Point", "coordinates": [79.213, 29.452] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Dhikala Entry Gate" },
+      "geometry": { "type": "Point", "coordinates": [79.213, 29.435] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Bijrani Entry Gate" },
+      "geometry": { "type": "Point", "coordinates": [79.148, 29.395] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Jhirna Entry Gate" },
+      "geometry": { "type": "Point", "coordinates": [79.084, 29.348] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "entry_point", "name": "Amdanda Gate (Dhela Zone)" },
+      "geometry": { "type": "Point", "coordinates": [79.404, 29.420] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Dhikala High Tower" },
+      "geometry": { "type": "Point", "coordinates": [79.218, 29.455] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Gairal Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [79.265, 29.430] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "watchtower", "name": "Sultan Watch Tower" },
+      "geometry": { "type": "Point", "coordinates": [79.190, 29.388] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Jim Corbett Museum (Kaladhungi)" },
+      "geometry": { "type": "Point", "coordinates": [79.083, 29.341] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "landmark", "name": "Corbett Tiger Reserve HQ (Ramnagar)" },
+      "geometry": { "type": "Point", "coordinates": [79.125, 29.390] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "building", "name": "Ramnagar Town" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.11, 29.37], [79.13, 29.37], [79.14, 29.39], [79.13, 29.40],
+          [79.11, 29.40], [79.10, 29.39], [79.11, 29.37]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Ramnagar–Dhikala Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.125, 29.390], [79.145, 29.400], [79.165, 29.415],
+          [79.185, 29.430], [79.205, 29.445], [79.213, 29.452]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "layer_type": "road", "name": "Jhirna–Bijrani Track" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.084, 29.348], [79.100, 29.360], [79.120, 29.375], [79.148, 29.395]
+        ]
+      }
+    }
+  ]
+}
