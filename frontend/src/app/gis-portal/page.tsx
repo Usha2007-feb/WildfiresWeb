@@ -17,7 +17,7 @@ const GISPortalMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-full w-full animate-pulse bg-slate-800 flex items-center justify-center">
+      <div className="h-full w-full animate-pulse bg-slate-100 flex items-center justify-center">
         <div className="text-slate-400 text-sm">Loading GIS Map…</div>
       </div>
     ),
@@ -116,25 +116,25 @@ export default function GISPortalPage() {
   }, []);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-slate-950">
+    <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-white">
       {/* ─── LEFT SIDEBAR ─── */}
-      <aside className="w-[340px] shrink-0 overflow-y-auto bg-[#0F172A] border-r border-slate-800 flex flex-col">
+      <aside className="w-[340px] shrink-0 overflow-y-auto bg-[#F8FAFC] border-r border-slate-200 flex flex-col">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800">
+        <div className="p-5 border-b border-slate-200">
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 mb-1">
-              <Globe2 className="h-5 w-5 text-emerald-400" />
-              <h1 className="text-[17px] font-bold text-white tracking-tight">GIS Portal</h1>
+              <Globe2 className="h-5 w-5 text-emerald-600" />
+              <h1 className="text-[17px] font-bold text-slate-900 tracking-tight">GIS Portal</h1>
             </div>
-            <p className="text-[12px] text-slate-400 leading-relaxed">
+            <p className="text-[12px] text-slate-500 leading-relaxed">
               Forest management decision support — spatial database, geo-fencing & administrative layers
             </p>
           </motion.div>
         </div>
 
         {/* Region Selector */}
-        <div className="p-4 border-b border-slate-800">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3">Monitored Regions</p>
+        <div className="p-4 border-b border-slate-200">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3">Monitored Regions</p>
           <div className="space-y-1.5">
             {REGIONS.map((r) => (
               <button
@@ -142,17 +142,17 @@ export default function GISPortalPage() {
                 onClick={() => setActiveRegion(r.id)}
                 className={`w-full flex items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-all duration-200 ${
                   activeRegion === r.id
-                    ? "bg-emerald-600/20 ring-1 ring-emerald-500/40 text-white"
-                    : "text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                    ? "bg-emerald-50 ring-1 ring-emerald-200 text-slate-900"
+                    : "text-slate-600 hover:bg-slate-100"
                 }`}
               >
-                <Trees className={`h-4 w-4 shrink-0 mt-0.5 ${activeRegion === r.id ? "text-emerald-400" : "text-slate-600"}`} />
+                <Trees className={`h-4 w-4 shrink-0 mt-0.5 ${activeRegion === r.id ? "text-emerald-600" : "text-slate-400"}`} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] font-semibold leading-tight">{r.name}</p>
                   <p className="text-[11px] mt-0.5 text-slate-500">{r.state} · {r.area_sq_km} km²</p>
                 </div>
                 {activeRegion === r.id && (
-                  <div className="h-2 w-2 rounded-full bg-emerald-400 shrink-0 mt-1.5" />
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 shrink-0 mt-1.5" />
                 )}
               </button>
             ))}
@@ -160,8 +160,8 @@ export default function GISPortalPage() {
         </div>
 
         {/* Layer Controls */}
-        <div className="p-4 border-b border-slate-800">
-          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-2">
+        <div className="p-4 border-b border-slate-200">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
             <Layers className="h-3 w-3" /> Map Layers
           </p>
           <div className="space-y-1.5">
@@ -171,15 +171,15 @@ export default function GISPortalPage() {
                 onClick={() => toggleLayer(key)}
                 className={`w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left transition-all ${
                   visibleLayers[key]
-                    ? "bg-slate-800/80 text-slate-200"
-                    : "text-slate-500 hover:bg-slate-800/40"
+                    ? "bg-slate-100 text-slate-700"
+                    : "text-slate-500 hover:bg-slate-50"
                 }`}
               >
                 <div
                   className={`h-4 w-4 rounded border-2 flex items-center justify-center shrink-0 transition-all`}
                   style={{
                     background: visibleLayers[key] ? color : "transparent",
-                    borderColor: visibleLayers[key] ? color : "#475569",
+                    borderColor: visibleLayers[key] ? color : "#CBD5E1",
                   }}
                 >
                   {visibleLayers[key] && (
@@ -195,8 +195,8 @@ export default function GISPortalPage() {
           </div>
 
           {/* Zone Legend */}
-          <div className="mt-4 pt-4 border-t border-slate-800">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Zone Types</p>
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Zone Types</p>
             <div className="space-y-1.5">
               {ZONE_LEGEND.map(({ type }) => {
                 const style = ZONE_STYLE[type];
@@ -206,7 +206,7 @@ export default function GISPortalPage() {
                       className="h-3 w-6 rounded-sm"
                       style={{ background: style.fill, opacity: 0.8, border: `2px solid ${style.color}` }}
                     />
-                    <span className="text-[11px] text-slate-400">{style.label}</span>
+                    <span className="text-[11px] text-slate-600">{style.label}</span>
                   </div>
                 );
               })}
@@ -217,47 +217,47 @@ export default function GISPortalPage() {
         {/* Administrative Info */}
         {admin && (
           <div className="p-4 flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-3 flex items-center gap-2">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
               <BarChart3 className="h-3 w-3" /> Administrative Data
             </p>
             <div className="space-y-3">
-              <div className="rounded-lg bg-slate-800/60 px-3 py-2.5">
-                <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-0.5">Division</p>
-                <p className="text-[12px] text-slate-200 font-medium">{admin.division}</p>
+              <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Division</p>
+                <p className="text-[12px] text-slate-700 font-medium">{admin.division}</p>
               </div>
-              <div className="rounded-lg bg-slate-800/60 px-3 py-2.5">
-                <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-1.5">Ranges</p>
+              <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5">Ranges</p>
                 <div className="flex flex-wrap gap-1">
                   {admin.ranges.map((r) => (
-                    <span key={r} className="rounded-full bg-emerald-900/60 px-2 py-0.5 text-[10px] text-emerald-300 font-medium">
+                    <span key={r} className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] text-emerald-700 font-medium">
                       {r}
                     </span>
                   ))}
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <div className="rounded-lg bg-slate-800/60 px-3 py-2.5">
-                  <p className="text-[10px] text-slate-500 mb-0.5">Beats</p>
-                  <p className="text-[11px] text-slate-300">{admin.beats}</p>
+                <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                  <p className="text-[10px] text-slate-400 mb-0.5">Beats</p>
+                  <p className="text-[11px] text-slate-700">{admin.beats}</p>
                 </div>
-                <div className="rounded-lg bg-slate-800/60 px-3 py-2.5">
-                  <p className="text-[10px] text-slate-500 mb-0.5">Total Area</p>
-                  <p className="text-[11px] text-slate-300">{admin.area_ha}</p>
+                <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                  <p className="text-[10px] text-slate-400 mb-0.5">Total Area</p>
+                  <p className="text-[11px] text-slate-700">{admin.area_ha}</p>
                 </div>
               </div>
-              <div className="rounded-lg bg-slate-800/60 px-3 py-2.5">
-                <p className="text-[10px] text-slate-500 mb-0.5">Compartments</p>
-                <p className="text-[12px] text-slate-300">{admin.compartments}</p>
+              <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                <p className="text-[10px] text-slate-400 mb-0.5">Compartments</p>
+                <p className="text-[12px] text-slate-700">{admin.compartments}</p>
               </div>
             </div>
 
             {/* Spatial Query Info */}
-            <div className="mt-4 rounded-lg bg-blue-950/60 ring-1 ring-blue-800/50 px-3 py-2.5">
+            <div className="mt-4 rounded-lg bg-blue-50 ring-1 ring-blue-100 px-3 py-2.5">
               <div className="flex items-center gap-2 mb-1.5">
-                <Navigation2 className="h-3 w-3 text-blue-400" />
-                <p className="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Spatial Query</p>
+                <Navigation2 className="h-3 w-3 text-blue-500" />
+                <p className="text-[10px] font-bold text-blue-600 uppercase tracking-wider">Spatial Query</p>
               </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
+              <p className="text-[11px] text-slate-500 leading-relaxed">
                 Point-in-polygon checks classify any detection coordinate against
                 Core, Buffer, and Eco-Sensitive zones in real time to prioritize
                 field verification alerts.
@@ -282,12 +282,12 @@ export default function GISPortalPage() {
           key={activeRegion}
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-4 left-4 z-[500] flex items-center gap-3 rounded-xl bg-slate-900/90 backdrop-blur-md px-4 py-2.5 shadow-xl ring-1 ring-white/10"
+          className="absolute top-4 left-4 z-[500] flex items-center gap-3 rounded-xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl ring-1 ring-slate-200/80"
         >
-          <Trees className="h-4 w-4 text-emerald-400" />
+          <Trees className="h-4 w-4 text-emerald-600" />
           <div>
-            <p className="text-[13px] font-bold text-white">{region?.name}</p>
-            <p className="text-[11px] text-slate-400">{region?.state} · {region?.forest_type}</p>
+            <p className="text-[13px] font-bold text-slate-900">{region?.name}</p>
+            <p className="text-[11px] text-slate-500">{region?.state} · {region?.forest_type}</p>
           </div>
         </motion.div>
 
@@ -298,42 +298,42 @@ export default function GISPortalPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[500] rounded-2xl bg-slate-900/95 backdrop-blur-md px-5 py-4 shadow-2xl ring-1 ring-white/10 max-w-[480px] w-full mx-4"
+              className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[500] rounded-2xl bg-white/95 backdrop-blur-md px-5 py-4 shadow-2xl ring-1 ring-slate-200/80 max-w-[480px] w-full mx-4"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <Info className="h-3.5 w-3.5 text-blue-400 shrink-0" />
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-blue-400">
+                    <Info className="h-3.5 w-3.5 text-blue-500 shrink-0" />
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-blue-600">
                       {selectedFeature.zone_type
                         ? ZONE_STYLE[selectedFeature.zone_type as keyof typeof ZONE_STYLE]?.label || "Zone"
                         : selectedFeature.layer_type || "Feature"}
                     </p>
                   </div>
-                  <p className="text-[14px] font-bold text-white truncate">
+                  <p className="text-[14px] font-bold text-slate-900 truncate">
                     {selectedFeature.name || "Unnamed Feature"}
                   </p>
                   {selectedFeature.description && (
-                    <p className="mt-1 text-[12px] text-slate-400 line-clamp-2">{selectedFeature.description}</p>
+                    <p className="mt-1 text-[12px] text-slate-500 line-clamp-2">{selectedFeature.description}</p>
                   )}
                   <div className="mt-2 flex flex-wrap gap-2">
                     {selectedFeature.protection_level && (
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
                         Protection: {selectedFeature.protection_level}
                       </span>
                     )}
                     {selectedFeature.management_unit && (
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
                         {selectedFeature.management_unit}
                       </span>
                     )}
                     {selectedFeature.area_sqkm && (
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
                         {selectedFeature.area_sqkm} km²
                       </span>
                     )}
                     {selectedFeature.state && (
-                      <span className="rounded-full bg-slate-800 px-2 py-0.5 text-[10px] text-slate-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600">
                         {selectedFeature.state}
                       </span>
                     )}
@@ -341,7 +341,7 @@ export default function GISPortalPage() {
                 </div>
                 <button
                   onClick={() => setSelectedFeature(null)}
-                  className="text-slate-500 hover:text-slate-300 transition-colors text-xl leading-none shrink-0"
+                  className="text-slate-400 hover:text-slate-600 transition-colors text-xl leading-none shrink-0"
                 >
                   ×
                 </button>
@@ -350,16 +350,16 @@ export default function GISPortalPage() {
           )}
         </AnimatePresence>
 
-        <div className="absolute bottom-5 left-4 z-[500] rounded-xl bg-slate-900/90 px-4 py-3 text-white shadow-xl ring-1 ring-white/10">
+        <div className="absolute bottom-5 left-4 z-[500] rounded-xl bg-white/95 backdrop-blur-md px-4 py-3 shadow-xl ring-1 ring-slate-200/80">
           <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Geo-Fence Monitoring</p>
-          <p className="mt-1 text-[13px] font-semibold">{alerts.length} active detection{alerts.length === 1 ? "" : "s"}</p>
-          <p className="text-[11px] text-slate-400">{alertSummary.filter((zone) => zone.status !== "safe").length} monitored zone{alertSummary.filter((zone) => zone.status !== "safe").length === 1 ? "" : "s"} under watch</p>
+          <p className="mt-1 text-[13px] font-semibold text-slate-900">{alerts.length} active detection{alerts.length === 1 ? "" : "s"}</p>
+          <p className="text-[11px] text-slate-500">{alertSummary.filter((zone) => zone.status !== "safe").length} monitored zone{alertSummary.filter((zone) => zone.status !== "safe").length === 1 ? "" : "s"} under watch</p>
         </div>
 
         {/* Right panel toggle */}
         <button
           onClick={() => setRightPanelOpen((p) => !p)}
-          className="absolute top-4 right-4 z-[500] rounded-lg bg-slate-900/90 backdrop-blur-md p-2 shadow-lg ring-1 ring-white/10 text-slate-400 hover:text-white transition-colors"
+          className="absolute top-4 right-4 z-[500] rounded-lg bg-white/95 backdrop-blur-md p-2 shadow-lg ring-1 ring-slate-200/80 text-slate-500 hover:text-slate-700 transition-colors"
           title="Toggle info panel"
         >
           <ChevronRight
@@ -378,34 +378,34 @@ export default function GISPortalPage() {
               className="absolute top-14 right-4 z-[500] w-[260px] space-y-3"
             >
               {/* Region overview */}
-              <div className="rounded-xl bg-slate-900/90 backdrop-blur-md p-4 ring-1 ring-white/10 shadow-xl">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Region Overview</p>
+              <div className="rounded-xl bg-white/95 backdrop-blur-md p-4 ring-1 ring-slate-200/80 shadow-xl">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Region Overview</p>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-[11px] text-slate-400">Forest Type</span>
-                    <span className="text-[11px] text-slate-200 font-medium text-right max-w-[130px] leading-tight">
+                    <span className="text-[11px] text-slate-500">Forest Type</span>
+                    <span className="text-[11px] text-slate-700 font-medium text-right max-w-[130px] leading-tight">
                       {region?.forest_type}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[11px] text-slate-400">Fire Season</span>
-                    <span className="text-[11px] text-slate-200 font-medium">{region?.fire_season}</span>
+                    <span className="text-[11px] text-slate-500">Fire Season</span>
+                    <span className="text-[11px] text-slate-700 font-medium">{region?.fire_season}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[11px] text-slate-400">Elevation</span>
-                    <span className="text-[11px] text-slate-200 font-medium">{region?.elevation}</span>
+                    <span className="text-[11px] text-slate-500">Elevation</span>
+                    <span className="text-[11px] text-slate-700 font-medium">{region?.elevation}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-[11px] text-slate-400">Area</span>
-                    <span className="text-[11px] text-slate-200 font-medium">{region?.area_sq_km} km²</span>
+                    <span className="text-[11px] text-slate-500">Area</span>
+                    <span className="text-[11px] text-slate-700 font-medium">{region?.area_sq_km} km²</span>
                   </div>
                 </div>
               </div>
 
               {/* Geo-fence zones summary */}
-              <div className="rounded-xl bg-slate-900/90 backdrop-blur-md p-4 ring-1 ring-white/10 shadow-xl">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 flex items-center gap-1.5">
-                  <AlertTriangle className="h-3 w-3 text-amber-400" /> Zone Priority
+              <div className="rounded-xl bg-white/95 backdrop-blur-md p-4 ring-1 ring-slate-200/80 shadow-xl">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2 flex items-center gap-1.5">
+                  <AlertTriangle className="h-3 w-3 text-amber-500" /> Zone Priority
                 </p>
                 <div className="space-y-1.5">
                   {ZONE_LEGEND.map(({ type }) => {
@@ -416,7 +416,7 @@ export default function GISPortalPage() {
                           className="h-2.5 w-5 rounded-sm shrink-0"
                           style={{ background: style.fill, border: `1.5px solid ${style.color}` }}
                         />
-                        <span className="text-[11px] text-slate-300">{style.label}</span>
+                        <span className="text-[11px] text-slate-700">{style.label}</span>
                       </div>
                     );
                   })}
@@ -427,9 +427,9 @@ export default function GISPortalPage() {
               </div>
 
               {/* Coordinates */}
-              <div className="rounded-xl bg-slate-900/90 backdrop-blur-md p-4 ring-1 ring-white/10 shadow-xl">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">Coordinates</p>
-                <p className="text-[11px] text-slate-300 font-mono">
+              <div className="rounded-xl bg-white/95 backdrop-blur-md p-4 ring-1 ring-slate-200/80 shadow-xl">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Coordinates</p>
+                <p className="text-[11px] text-slate-700 font-mono">
                   Centre: {region?.center.lat}°N, {region?.center.lon}°E
                 </p>
                 <p className="text-[11px] text-slate-500 font-mono mt-0.5">
