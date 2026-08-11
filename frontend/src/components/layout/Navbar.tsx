@@ -8,7 +8,7 @@ const links = [
   { href: "/gis-portal", label: "GIS & Geo-Fencing" },
   { href: "/monitoring", label: "Monitoring" },
   { href: "/deforestation", label: "Deforestation" },
-  { href: "/region-analysis", label: "Region Analysis" },
+  { href: "/region-analysis", label: "CNN Model" },
 ];
 
 export default function Navbar() {
