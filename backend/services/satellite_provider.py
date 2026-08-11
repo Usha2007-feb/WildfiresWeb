@@ -275,9 +275,18 @@ class SentinelHubProvider(SatelliteProvider):
         before_ndvi = self._fetch_ndvi_stats(geojson, before_year)
         after_ndvi = self._fetch_ndvi_stats(geojson, after_year)
 
+        data_source = "demo"
         if before_ndvi is None or after_ndvi is None:
-            logger.info(f"Sentinel Hub data unavailable for {zone_name}, falling back to demo")
-            return DemoProvider().analyze_zone(zone_id, before_year, after_year)
+            logger.info(f"Sentinel Hub stats unavailable for {zone_name}, using DB vegetation data")
+            db_result = DemoProvider().analyze_zone(zone_id, before_year, after_year)
+            if db_result:
+                before_ndvi = db_result.before_ndvi
+                after_ndvi = db_result.after_ndvi
+            else:
+                return None
+            data_source = "sentinel-2 (fallback: DB vegetation)"
+        else:
+            data_source = "sentinel-2"
 
         change = after_ndvi - before_ndvi
 
@@ -311,7 +320,7 @@ class SentinelHubProvider(SatelliteProvider):
         result.confidence = confidence
         result.change_type = change_type
         result.detected_at = datetime.now(timezone.utc).isoformat()
-        result.data_source = "sentinel-2"
+        result.data_source = data_source
         result.change_polygons = sample_polygons
         result.summary = summary
         return result
