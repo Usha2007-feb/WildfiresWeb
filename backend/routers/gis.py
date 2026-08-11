@@ -25,17 +25,21 @@ def get_gis_map_data():
            WHERE z.geom IS NOT NULL
            ORDER BY z.type, z.name"""
     )
-    return [
-        {
+    result = []
+    for r in rows:
+        try:
+            geom = json.loads(r["geojson"])
+        except Exception:
+            geom = None
+        result.append({
             "id": r["id"], "name": r["name"], "type": r["type"],
             "state": r.get("state"), "district": r.get("district"),
             "area_ha": r.get("area_ha"),
             "metadata": r.get("metadata") or {},
-            "geojson": r["geojson"],
+            "geojson": geom,
             "color": TYPE_COLORS.get(r["type"], "#94A3B8"),
-        }
-        for r in rows
-    ]
+        })
+    return result
 
 
 POI_EMOJI: dict[str, str] = {
@@ -82,6 +86,10 @@ def get_gis_zone_detail(zone_id: int):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Zone not found")
 
     r = rows[0]
+    try:
+        geom = json.loads(r["geojson"])
+    except Exception:
+        geom = None
     children = query(
         """SELECT c.id, c.name, c.type
            FROM zone_hierarchy h JOIN zones c ON h.child_zone_id = c.id
@@ -94,7 +102,7 @@ def get_gis_zone_detail(zone_id: int):
         "state": r.get("state"), "district": r.get("district"),
         "area_ha": r.get("area_ha"),
         "metadata": r.get("metadata") or {},
-        "geojson": r["geojson"],
+        "geojson": geom,
         "color": TYPE_COLORS.get(r["type"], "#94A3B8"),
         "children": [{"id": c["id"], "name": c["name"], "type": c["type"]} for c in children],
     }

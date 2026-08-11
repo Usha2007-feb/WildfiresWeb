@@ -195,16 +195,20 @@ def get_map_data():
            WHERE z.geom IS NOT NULL
            ORDER BY v.ndvi_change ASC""",
     )
-    return [
-        {
+    result = []
+    for r in rows:
+        try:
+            geom = json.loads(r["geojson"])
+        except Exception:
+            geom = None
+        result.append({
             "id": r["id"], "name": r["name"], "type": r["type"],
-            "state": r.get("state"), "geojson": r["geojson"],
+            "state": r.get("state"), "geojson": geom,
             "ndvi_first": r["ndvi_first"], "ndvi_last": r["ndvi_last"],
             "ndvi_change": r["ndvi_change"], "cover_change": r["cover_change"],
             "trend": r["trend"], "color": TREND_COLORS.get(r["trend"], "#94A3B8"),
-        }
-        for r in rows
-    ]
+        })
+    return result
 
 
 @router.get("/{zone_id}")
