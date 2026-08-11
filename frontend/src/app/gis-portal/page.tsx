@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Layers, Trees, Building2, MapPin,
   Shield, ChevronRight, Info, BarChart3, AlertTriangle,
-  Globe2, Navigation2
+  Globe2, Navigation2, BellRing, Flame
 } from "lucide-react";
 import { REGIONS } from "@/lib/regions";
 import { ZONE_STYLE } from "@/lib/gisLayers";
@@ -25,6 +25,7 @@ const GISPortalMap = dynamic(
 );
 
 type OverlayKey = "boundaries" | "geofence" | "buildings" | "locations" | "alerts";
+type SidebarTab = "layers" | "alerts" | "analysis";
 
 const LAYER_CONFIG: Array<{ key: OverlayKey; label: string; icon: React.ElementType; color: string }> = [
   { key: "boundaries", label: "Reserve Boundaries", icon: Globe2, color: "#16A34A" },
@@ -89,6 +90,7 @@ export default function GISPortalPage() {
   });
   const [selectedFeature, setSelectedFeature] = useState<Record<string, string> | null>(null);
   const [rightPanelOpen, setRightPanelOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<SidebarTab>("layers");
   const { data: alerts = [] } = useAlerts();
   const { data: alertSummary = [] } = useAlertSummary();
 
@@ -122,12 +124,32 @@ export default function GISPortalPage() {
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 mb-1">
               <Globe2 className="h-5 w-5 text-emerald-600" />
-              <h1 className="text-[17px] font-bold text-slate-900 tracking-tight">GIS Portal</h1>
+              <h1 className="text-[17px] font-bold text-slate-900 tracking-tight">Forest Operations</h1>
             </div>
             <p className="text-[12px] text-slate-500 leading-relaxed">
-              Forest management decision support — spatial database, geo-fencing & administrative layers
+              Spatial database, geo-fencing, administrative layers & real-time alerts
             </p>
           </motion.div>
+
+          {/* Sidebar Tabs */}
+          <div className="mt-4 flex gap-1 bg-slate-100 rounded-lg p-0.5">
+            {[
+              { key: "layers" as const, label: "Map Layers", icon: Layers },
+              { key: "alerts" as const, label: "Alerts & Notifications", icon: BellRing },
+              { key: "analysis" as const, label: "Regional Analysis", icon: BarChart3 },
+            ].map((t) => (
+              <button
+                key={t.key}
+                onClick={() => setActiveTab(t.key)}
+                className={`flex-1 flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-[11px] font-semibold transition-all ${
+                  activeTab === t.key ? "bg-white text-slate-800 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                <t.icon className="h-3 w-3" />
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Region Selector */}
