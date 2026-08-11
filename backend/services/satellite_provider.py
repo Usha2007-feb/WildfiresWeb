@@ -156,8 +156,8 @@ class DemoProvider(SatelliteProvider):
 
 
 class SentinelHubProvider(SatelliteProvider):
-    TOKEN_URL = "https://services.sentinel-hub.com/auth/realms/main/protocol/openid-connect/token"
-    STATS_URL = "https://services.sentinel-hub.com/api/v1/statistics"
+    TOKEN_URL = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
+    STATS_URL = "https://sh.dataspace.copernicus.eu/api/v1/statistics"
 
     def __init__(self):
         self.client_id = os.environ.get("SENTINEL_HUB_CLIENT_ID", "")
@@ -166,11 +166,15 @@ class SentinelHubProvider(SatelliteProvider):
         self._token_expiry = 0
 
     def get_source_name(self):
-        return "Sentinel-2 (ESA Copernicus)"
+        return "Sentinel-2 (ESA Copernicus CDSE)"
 
     def is_available(self):
         if not (self.client_id and self.client_secret):
+            logger.info("Sentinel Hub: credentials not configured")
             return False
+        logger.info(f"Sentinel Hub client ID configured: {bool(self.client_id)}")
+        logger.info(f"Sentinel Hub client secret configured: {bool(self.client_secret)}")
+        logger.info(f"Sentinel Hub token URL: {self.TOKEN_URL}")
         token = self._get_token()
         return token is not None
 
@@ -189,15 +193,16 @@ class SentinelHubProvider(SatelliteProvider):
                     "client_id": self.client_id,
                     "client_secret": self.client_secret,
                 },
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
                 timeout=15,
             )
             if r.status_code == 200:
                 data = r.json()
                 self._token = data["access_token"]
                 self._token_expiry = now + data.get("expires_in", 3600)
-                logger.info("Sentinel Hub authenticated")
+                logger.info("Sentinel Hub (CDSE) authenticated successfully")
                 return self._token
-            logger.warning(f"Sentinel Hub auth failed: {r.status_code} {r.text[:200]}")
+            logger.warning(f"Sentinel Hub auth failed: {r.status_code} — check SENTINEL_HUB_CLIENT_ID and SENTINEL_HUB_CLIENT_SECRET")
         except Exception as e:
             logger.warning(f"Sentinel Hub auth error: {e}")
         return None

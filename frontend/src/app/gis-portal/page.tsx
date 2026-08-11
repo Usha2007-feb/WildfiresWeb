@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Layers, Trees, Droplets, Building2, MapPin,
+  Layers, Trees, Building2, MapPin,
   Shield, ChevronRight, Info, BarChart3, AlertTriangle,
   Globe2, Navigation2
 } from "lucide-react";
@@ -24,12 +24,11 @@ const GISPortalMap = dynamic(
   }
 );
 
-type OverlayKey = "boundaries" | "geofence" | "water" | "buildings" | "locations" | "alerts";
+type OverlayKey = "boundaries" | "geofence" | "buildings" | "locations" | "alerts";
 
 const LAYER_CONFIG: Array<{ key: OverlayKey; label: string; icon: React.ElementType; color: string }> = [
   { key: "boundaries", label: "Reserve Boundaries", icon: Globe2, color: "#16A34A" },
   { key: "geofence", label: "Geo-Fence Zones", icon: Shield, color: "#DC2626" },
-  { key: "water", label: "Water Bodies", icon: Droplets, color: "#2563EB" },
   { key: "buildings", label: "Infrastructure", icon: Building2, color: "#D97706" },
   { key: "locations", label: "Landmarks & Posts", icon: MapPin, color: "#7C3AED" },
   { key: "alerts", label: "Active Fire Alerts", icon: AlertTriangle, color: "#DC2626" },
@@ -84,9 +83,8 @@ export default function GISPortalPage() {
   const [visibleLayers, setVisibleLayers] = useState<Record<OverlayKey, boolean>>({
     boundaries: true,
     geofence: true,
-    water: true,
-    buildings: true,
-    locations: true,
+    buildings: false,
+    locations: false,
     alerts: true,
   });
   const [selectedFeature, setSelectedFeature] = useState<Record<string, string> | null>(null);

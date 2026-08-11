@@ -13,7 +13,6 @@ import type { Alert } from "@/hooks/useAlerts";
 type OverlayKey =
   | "boundaries"
   | "geofence"
-  | "water"
   | "buildings"
   | "locations"
   | "alerts";
@@ -34,7 +33,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
   const layerRefs = useRef<Record<string, L.Layer | L.LayerGroup | null>>({
     boundaries: null,
     geofence: null,
-    water: null,
     buildings: null,
     locations: null,
     alerts: null,
@@ -214,7 +212,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
 
   function loadRegionLayers(map: L.Map, regionId: string) {
     const clearAndSet = (
-      key: "water" | "buildings" | "locations",
+      key: "buildings" | "locations",
       group: L.LayerGroup
     ) => {
       const prev = layerRefs.current[key];
@@ -223,7 +221,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
       if (visibleLayers[key]) group.addTo(map);
     };
 
-    const wGroup = L.layerGroup();
     const bGroup = L.layerGroup();
     const lGroup = L.markerClusterGroup({ maxClusterRadius: 50, spiderfyOnMaxZoom: true });
 
@@ -235,15 +232,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
           const name = feature.properties?.name || "";
           const geomType = feature.geometry?.type;
 
-          if (type === "water") {
-            const l = L.geoJSON(feature as never, {
-              style: () => ({ color: "#2563EB", weight: 2, fillColor: "#60A5FA", fillOpacity: 0.3 }),
-              pointToLayer: (_f, latlng) =>
-                L.circleMarker(latlng, { radius: 6, color: "#2563EB", fillColor: "#60A5FA", fillOpacity: 0.7, weight: 2 }),
-            });
-            if (name) l.bindTooltip(`💧 ${name}`, { permanent: false, direction: "top", className: "bg-white/90 backdrop-blur-sm border-0 text-slate-700 text-xs font-medium px-2 py-1 shadow-sm rounded-md" });
-            l.addTo(wGroup);
-          } else if (type === "building" || type === "road") {
+          if (type === "building" || type === "road") {
             const l = L.geoJSON(feature as never, {
               style: () => ({
                 color: "#78350F",
@@ -292,7 +281,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
           }
         });
 
-        clearAndSet("water", wGroup);
         clearAndSet("buildings", bGroup);
         clearAndSet("locations", lGroup);
       })
