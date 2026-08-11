@@ -8,6 +8,8 @@ import LayerControls from "@/components/panels/LayerControls";
 import ForestFilter from "@/components/panels/ForestFilter";
 import PredictionModal from "@/components/overlays/PredictionModal";
 import TopRisksPanel from "@/components/panels/TopRisksPanel";
+import { api } from "@/lib/constants";
+import { FileDown } from "lucide-react";
 
 const MapView = dynamic(() => import("@/components/map/MapView"), {
   ssr: false,
@@ -31,6 +33,14 @@ export default function Home() {
       <LayerControls />
       <Legend />
       <PredictionModal />
+      <a
+        href={api("/api/v1/reports/fire-risk")}
+        download
+        className="absolute bottom-4 right-4 z-30 flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-[12px] font-bold text-blue-600 shadow-lg ring-1 ring-slate-200/80 hover:bg-blue-50 transition-all"
+      >
+        <FileDown className="h-4 w-4" />
+        Download AI Report
+      </a>
     </main>
   );
 }
