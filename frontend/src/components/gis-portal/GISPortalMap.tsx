@@ -45,10 +45,14 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
 
     const map = L.map(container.current, {
       center: [24.0, 83.0],
-      zoom: 5,
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 18,
       zoomControl: true,
       attributionControl: false,
       scrollWheelZoom: true,
+      maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
+      maxBoundsViscosity: 1.0,
     });
 
     // Satellite base layer
@@ -156,8 +160,9 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
           onEachFeature: (feature: any, l) => {
             const p = feature.properties || {};
             l.bindTooltip(`<b>${p.name}</b><br/>${p.state} · ${p.area}`, {
-              permanent: false,
+              permanent: true,
               direction: "center",
+              className: "gis-permanent-label",
             });
             l.on("click", () => onFeatureClick?.(p));
           },
@@ -198,7 +203,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
             `<b>${feature.properties?.name || zoneType}</b><br/>${style.label} · ${
               feature.properties?.protection_level || ""
             }`,
-            { permanent: false, direction: "center" }
+            { permanent: true, direction: "center", className: "gis-permanent-label" }
           );
           l.on("click", () => onFeatureClick?.(feature.properties || {}));
           l.addTo(group);
@@ -244,7 +249,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
               pointToLayer: (_f, latlng) =>
                 L.circleMarker(latlng, { radius: 5, color: "#78350F", fillColor: "#FCD34D", fillOpacity: 0.8, weight: 2 }),
             });
-            if (name) l.bindTooltip(type === "road" ? `🛤 ${name}` : `🏗 ${name}`, { permanent: false, direction: "top", className: "bg-white/90 backdrop-blur-sm border-0 text-slate-700 text-xs font-medium px-2 py-1 shadow-sm rounded-md" });
+            if (name) l.bindTooltip(type === "road" ? `🛤 ${name}` : `🏗 ${name}`, { permanent: true, direction: "top", className: "gis-permanent-label" });
             l.addTo(bGroup);
           } else if (["landmark", "entry_point", "watchtower", "office"].includes(type)) {
             if (geomType === "Point") {
@@ -274,7 +279,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
                 popupAnchor: [0, -32]
               });
               const marker = L.marker(coords, { icon });
-              if (name) marker.bindTooltip(name, { permanent: false, direction: "top", offset: [0, -20], className: "bg-white/90 backdrop-blur-sm border-0 text-slate-800 text-xs font-bold px-2 py-1 shadow-md rounded-md" });
+              if (name) marker.bindTooltip(name, { permanent: true, direction: "top", offset: [0, -20], className: "gis-permanent-label" });
               marker.on("click", () => onFeatureClick?.(feature.properties || {}));
               marker.addTo(lGroup);
             }

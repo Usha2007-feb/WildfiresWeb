@@ -30,8 +30,11 @@ export default function DeforestationMap({ onZonesLoaded, onZoneClick, onRectDra
 
     const map = L.map(containerRef.current, {
       center: [23.5, 80], zoom: 6,
+      minZoom: 5, maxZoom: 18,
       zoomControl: true, attributionControl: false,
       scrollWheelZoom: true,
+      maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
+      maxBoundsViscosity: 1.0,
     });
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       attribution: "Esri, Maxar", maxZoom: 19,
