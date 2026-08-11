@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { api } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, TrendingDown, TrendingUp, Minus, Trees, Square, Activity, Crosshair, Calendar, Target, FileDown } from "lucide-react";
+import { useLang } from "@/components/auth/LanguageProvider";
 
 const DeforestationMapInner = dynamic(() => import("@/components/map/DeforestationMap"), { ssr: false });
 
@@ -32,6 +33,7 @@ function TrendPill({ trend, change }: { trend: string; change: number }) {
 }
 
 export default function DeforestationPage() {
+  const { lang } = useLang();
   const [features, setFeatures] = useState<ZoneFeature[]>([]);
   const [selected, setSelected] = useState<ZoneFeature | null>(null);
   const [detail, setDetail] = useState<ZoneDetail | null>(null);
@@ -99,7 +101,7 @@ export default function DeforestationPage() {
           </button>
           {hasRect && <button onClick={() => { setHasRect(false); setSelected(null); setDetail(null); }} className="flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200">Clear</button>}
           <a
-            href={api("/api/v1/reports/deforestation")}
+            href={api(`/api/v1/reports/deforestation?lang=${lang}`)}
             download
             className="flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-all duration-200"
           >
