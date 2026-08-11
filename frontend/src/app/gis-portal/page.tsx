@@ -280,7 +280,7 @@ export default function GISPortalPage() {
           key={activeRegion}
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-4 left-4 z-[500] flex items-center gap-3 rounded-xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl ring-1 ring-slate-200/80"
+          className="absolute top-14 left-4 z-[500] flex items-center gap-3 rounded-xl bg-white/95 backdrop-blur-md px-4 py-2.5 shadow-xl ring-1 ring-slate-200/80"
         >
           <Trees className="h-4 w-4 text-emerald-600" />
           <div>

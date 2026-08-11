@@ -96,6 +96,17 @@ export default function DeforestationPage() {
           <Trees className="h-5 w-5 text-emerald-600" />
           <span className="text-[14px] font-bold text-slate-800 tracking-tight">Deforestation Monitor</span>
           <span className="w-px h-5 bg-slate-200" />
+          <span className="text-[11px] font-semibold text-slate-400">Quick:</span>
+          {features.filter((z: ZoneFeature) => z.type === "reserve").slice(0, 4).map((z: ZoneFeature) => (
+            <button
+              key={z.id}
+              onClick={() => onZoneClick(z)}
+              className={`rounded-lg px-2.5 py-1 text-[11px] font-semibold transition-all ${selected?.id === z.id ? "bg-emerald-600 text-white" : "bg-slate-100 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700"}`}
+            >
+              {z.name.length > 12 ? z.name.slice(0, 12) + "\u2026" : z.name}
+            </button>
+          ))}
+          <span className="w-px h-5 bg-slate-200" />
           <button onClick={toggleDraw} className={`flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold transition-all duration-200 ${drawMode ? "bg-blue-600 text-white shadow-md shadow-blue-200" : "bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-700"}`}>
             <Square className="h-4 w-4" />{drawMode ? "Drawing..." : "Draw Area"}
           </button>

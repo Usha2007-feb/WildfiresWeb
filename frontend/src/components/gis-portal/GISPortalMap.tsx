@@ -48,12 +48,14 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
       zoom: 6,
       minZoom: 5,
       maxZoom: 18,
-      zoomControl: true,
+      zoomControl: false,
       attributionControl: false,
       scrollWheelZoom: true,
       maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
       maxBoundsViscosity: 1.0,
     });
+
+    L.control.zoom({ position: "bottomright" }).addTo(map);
 
     // Satellite base layer
     L.tileLayer(
