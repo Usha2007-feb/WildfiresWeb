@@ -2,17 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const links = [
-  { href: "/", label: "Dashboard" },
-  { href: "/forest-ops", label: "Forest Operations" },
-  { href: "/deforestation", label: "Deforestation" },
-  { href: "/model-explanation", label: "Model Metrics" },
-  { href: "/research", label: "Research" },
-];
+import { useLang } from "@/components/auth/LanguageProvider";
+import { Languages } from "lucide-react";
 
 export default function Navbar() {
   const path = usePathname();
+  const { lang, setLang, t } = useLang();
+
+  const links = [
+    { href: "/", label: t("nav", "dashboard") },
+    { href: "/gis-portal", label: t("nav", "gis") },
+    { href: "/monitoring", label: t("nav", "monitoring") },
+    { href: "/deforestation", label: t("nav", "deforestation") },
+    { href: "/region-analysis", label: t("nav", "cnn") },
+    { href: "/model-explanation", label: t("nav", "metrics") },
+    { href: "/research", label: t("nav", "research") },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white">
@@ -42,7 +47,16 @@ export default function Navbar() {
           ))}
         </div>
 
-        <div className="w-[140px]" />
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setLang(lang === "en" ? "hi" : "en")}
+            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-bold text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+            title={t("lang", "label")}
+          >
+            <Languages className="h-4 w-4" />
+            {t("lang", "toggle")}
+          </button>
+        </div>
       </div>
     </nav>
   );

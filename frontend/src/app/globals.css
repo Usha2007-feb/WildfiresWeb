@@ -83,137 +83,17 @@
 .leaflet-control-zoom a:hover { background: #F1F5F9 !important; }
 .leaflet-control-attribution { font-size: 10px !important; opacity: 0.5 !important; background: transparent !important; }
 
-/* ============================================================
-   Professional Cartographic Map Labels — Leaflet Tooltip System
-   ============================================================ */
-
-/* ── Base: strip all Leaflet tooltip chrome ── */
-.leaflet-tooltip.map-label,
-.leaflet-tooltip.map-label::before {
-  background: transparent !important;
-  background-color: transparent !important;
+.gis-permanent-label {
+  background: rgba(255,255,255,0.9) !important;
+  backdrop-filter: blur(4px);
   border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-}
-
-/* ── Base label typography ── */
-.leaflet-tooltip.map-label {
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 10.5px;
-  line-height: 1.2;
-  letter-spacing: 0.03em;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: Inter, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #1E293B !important;
   white-space: nowrap;
   pointer-events: none;
-  /* Strong multi-layer white text-stroke for satellite imagery legibility */
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.95),
-     1.5px -1.5px 0 rgba(255,255,255,0.95),
-    -1.5px  1.5px 0 rgba(255,255,255,0.95),
-     1.5px  1.5px 0 rgba(255,255,255,0.95),
-    -2px    0px   0 rgba(255,255,255,0.85),
-     2px    0px   0 rgba(255,255,255,0.85),
-     0px   -2px   0 rgba(255,255,255,0.85),
-     0px    2px   0 rgba(255,255,255,0.85),
-     0px    3px   6px rgba(0,0,0,0.55),
-     0px    1px   3px rgba(0,0,0,0.40);
-}
-
-/* ── Water / River labels: blue + italic (cartographic convention) ── */
-.leaflet-tooltip.map-label.water-label {
-  color: #1a56db !important;
-  font-style: italic;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.98),
-     1.5px -1.5px 0 rgba(255,255,255,0.98),
-    -1.5px  1.5px 0 rgba(255,255,255,0.98),
-     1.5px  1.5px 0 rgba(255,255,255,0.98),
-    -2px    0px   0 rgba(220,240,255,0.90),
-     2px    0px   0 rgba(220,240,255,0.90),
-     0px    4px   8px rgba(0,20,80,0.50),
-     0px    1px   3px rgba(0,0,0,0.35);
-}
-
-/* ── Road labels: amber/brown ── */
-.leaflet-tooltip.map-label.road-label {
-  color: #92400e !important;
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.97),
-     1.5px -1.5px 0 rgba(255,255,255,0.97),
-    -1.5px  1.5px 0 rgba(255,255,255,0.97),
-     1.5px  1.5px 0 rgba(255,255,255,0.97),
-     0px    3px   7px rgba(80,30,0,0.45),
-     0px    1px   3px rgba(0,0,0,0.35);
-}
-
-/* ── Landmark / POI labels ── */
-.leaflet-tooltip.map-label.landmark-label {
-  color: #1e293b !important;
-  font-size: 10px;
-  font-weight: 600;
-}
-
-/* ── Forest boundary labels: emerald green ── */
-.leaflet-tooltip.map-label.boundary-label {
-  color: #065f46 !important;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  text-shadow:
-    -2px -2px 0 rgba(255,255,255,0.97),
-     2px -2px 0 rgba(255,255,255,0.97),
-    -2px  2px 0 rgba(255,255,255,0.97),
-     2px  2px 0 rgba(255,255,255,0.97),
-     0px  4px 10px rgba(0,40,20,0.50),
-     0px  1px  3px rgba(0,0,0,0.40);
-}
-
-/* ── Geo-fence zone labels ── */
-.leaflet-tooltip.map-label.zone-label {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-/* Zone-type colour variants */
-.leaflet-tooltip.map-label.zone-core {
-  color: #b91c1c !important; /* deep red — core zone */
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.97),
-     1.5px -1.5px 0 rgba(255,255,255,0.97),
-    -1.5px  1.5px 0 rgba(255,255,255,0.97),
-     1.5px  1.5px 0 rgba(255,255,255,0.97),
-     0px    4px   9px rgba(120,0,0,0.45),
-     0px    1px   3px rgba(0,0,0,0.40);
-}
-
-.leaflet-tooltip.map-label.zone-buffer {
-  color: #b45309 !important; /* amber — buffer zone */
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.97),
-     1.5px -1.5px 0 rgba(255,255,255,0.97),
-    -1.5px  1.5px 0 rgba(255,255,255,0.97),
-     1.5px  1.5px 0 rgba(255,255,255,0.97),
-     0px    4px   9px rgba(90,40,0,0.40),
-     0px    1px   3px rgba(0,0,0,0.35);
-}
-
-.leaflet-tooltip.map-label.zone-eco {
-  color: #047857 !important; /* emerald — eco-sensitive zone */
-  text-shadow:
-    -1.5px -1.5px 0 rgba(255,255,255,0.97),
-     1.5px -1.5px 0 rgba(255,255,255,0.97),
-    -1.5px  1.5px 0 rgba(255,255,255,0.97),
-     1.5px  1.5px 0 rgba(255,255,255,0.97),
-     0px    4px   9px rgba(0,60,30,0.40),
-     0px    1px   3px rgba(0,0,0,0.35);
 }

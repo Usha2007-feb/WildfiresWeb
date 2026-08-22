@@ -13,7 +13,6 @@ import type { Alert } from "@/hooks/useAlerts";
 type OverlayKey =
   | "boundaries"
   | "geofence"
-  | "water"
   | "buildings"
   | "locations"
   | "alerts";
@@ -24,24 +23,16 @@ interface Props {
   onFeatureClick?: (props: Record<string, string>) => void;
   alerts?: Alert[];
   onAlertClick?: (alert: Alert) => void;
-  /** Called when the user clicks a blank map area (for point-prediction mode) */
-  onMapClick?: (lat: number, lon: number) => void;
-  /** Fly to this location when it changes (e.g. from alert selection) */
-  flyToAlert?: { lat: number; lon: number } | null;
 }
 
-export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureClick, alerts = [], onAlertClick, onMapClick, flyToAlert }: Props) {
+export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureClick, alerts = [], onAlertClick }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const initialized = useRef(false);
-  // Keep latest onMapClick in a ref so the map click handler is never stale
-  const onMapClickRef = useRef(onMapClick);
-  useEffect(() => { onMapClickRef.current = onMapClick; }, [onMapClick]);
 
   const layerRefs = useRef<Record<string, L.Layer | L.LayerGroup | null>>({
     boundaries: null,
     geofence: null,
-    water: null,
     buildings: null,
     locations: null,
     alerts: null,
@@ -54,11 +45,17 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
 
     const map = L.map(container.current, {
       center: [24.0, 83.0],
-      zoom: 5,
-      zoomControl: true,
+      zoom: 6,
+      minZoom: 5,
+      maxZoom: 18,
+      zoomControl: false,
       attributionControl: false,
       scrollWheelZoom: true,
+      maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
+      maxBoundsViscosity: 1.0,
     });
+
+    L.control.zoom({ position: "bottomright" }).addTo(map);
 
     // Satellite base layer
     L.tileLayer(
@@ -75,11 +72,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
 
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
 
-    // Forward bare map clicks to the prediction handler (Analysis tab)
-    map.on("click", (e: L.LeafletMouseEvent) => {
-      onMapClickRef.current?.(e.latlng.lat, e.latlng.lng);
-    });
-
     mapRef.current = map;
 
     // Load all region boundaries
@@ -92,12 +84,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // ---- Fly to alert location ----
-  useEffect(() => {
-    if (!mapRef.current || !flyToAlert) return;
-    mapRef.current.flyTo([flyToAlert.lat, flyToAlert.lon], 14, { duration: 1 });
-  }, [flyToAlert]);
 
   // ---- Pan to active region ----
   useEffect(() => {
@@ -165,7 +151,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     fetch("/forestReserves.geojson")
       .then((r) => r.json())
       .then((data) => {
-        if (mapRef.current !== map) return;
         const layer = L.geoJSON(data as never, {
           style: () => ({
             color: "#16A34A",
@@ -176,13 +161,11 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
           }),
           onEachFeature: (feature: any, l) => {
             const p = feature.properties || {};
-            if (p.name) {
-              l.bindTooltip(p.name, {
-                permanent: true,
-                direction: "center",
-                className: "map-label boundary-label",
-              });
-            }
+            l.bindTooltip(`<b>${p.name}</b><br/>${p.state} · ${p.area}`, {
+              permanent: true,
+              direction: "center",
+              className: "gis-permanent-label",
+            });
             l.on("click", () => onFeatureClick?.(p));
           },
         });
@@ -200,7 +183,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     fetch("/gis/geo_fence_zones.geojson")
       .then((r) => r.json())
       .then((data) => {
-        if (mapRef.current !== map) return;
         const group = L.layerGroup();
         const filtered = (data.features as any[]).filter(
           (f: any) => f?.properties?.region_id === regionId
@@ -209,14 +191,6 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
         filtered.forEach((feature: any) => {
           const zoneType = (feature.properties?.zone_type || "buffer_zone") as ZoneType;
           const style = ZONE_STYLE[zoneType] || ZONE_STYLE.buffer_zone;
-
-          // Map zone_type → CSS modifier class for colour-coded labels
-          const zoneCssClass: Record<string, string> = {
-            core_zone: "zone-core",
-            buffer_zone: "zone-buffer",
-            eco_sensitive_zone: "zone-eco",
-          };
-          const zoneClass = zoneCssClass[zoneType] || "zone-buffer";
 
           const l = L.geoJSON(feature as never, {
             style: () => ({
@@ -228,12 +202,10 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
             }),
           });
           l.bindTooltip(
-            feature.properties?.name || style.label,
-            {
-              permanent: true,
-              direction: "center",
-              className: `map-label zone-label ${zoneClass}`,
-            }
+            `<b>${feature.properties?.name || zoneType}</b><br/>${style.label} · ${
+              feature.properties?.protection_level || ""
+            }`,
+            { permanent: true, direction: "center", className: "gis-permanent-label" }
           );
           l.on("click", () => onFeatureClick?.(feature.properties || {}));
           l.addTo(group);
@@ -247,7 +219,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
 
   function loadRegionLayers(map: L.Map, regionId: string) {
     const clearAndSet = (
-      key: "water" | "buildings" | "locations",
+      key: "buildings" | "locations",
       group: L.LayerGroup
     ) => {
       const prev = layerRefs.current[key];
@@ -256,28 +228,18 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
       if (visibleLayers[key]) group.addTo(map);
     };
 
-    const wGroup = L.layerGroup();
     const bGroup = L.layerGroup();
     const lGroup = L.markerClusterGroup({ maxClusterRadius: 50, spiderfyOnMaxZoom: true });
 
     fetch(`/gis/${regionId}_layers.geojson`)
       .then((r) => r.json())
       .then((data) => {
-        if (mapRef.current !== map) return;
         (data.features as any[]).forEach((feature: any) => {
           const type = feature.properties?.layer_type as string;
           const name = feature.properties?.name || "";
           const geomType = feature.geometry?.type;
 
-          if (type === "water") {
-            const l = L.geoJSON(feature as never, {
-              style: () => ({ color: "#2563EB", weight: 2, fillColor: "#60A5FA", fillOpacity: 0.3 }),
-              pointToLayer: (_f, latlng) =>
-                L.circleMarker(latlng, { radius: 6, color: "#2563EB", fillColor: "#60A5FA", fillOpacity: 0.7, weight: 2 }),
-            });
-            if (name) l.bindTooltip(name, { permanent: true, direction: "center", className: "map-label water-label" });
-            l.addTo(wGroup);
-          } else if (type === "building" || type === "road") {
+          if (type === "building" || type === "road") {
             const l = L.geoJSON(feature as never, {
               style: () => ({
                 color: "#78350F",
@@ -289,7 +251,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
               pointToLayer: (_f, latlng) =>
                 L.circleMarker(latlng, { radius: 5, color: "#78350F", fillColor: "#FCD34D", fillOpacity: 0.8, weight: 2 }),
             });
-            if (name) l.bindTooltip(name, { permanent: true, direction: "center", className: "map-label road-label" });
+            if (name) l.bindTooltip(type === "road" ? `🛤 ${name}` : `🏗 ${name}`, { permanent: true, direction: "top", className: "gis-permanent-label" });
             l.addTo(bGroup);
           } else if (["landmark", "entry_point", "watchtower", "office"].includes(type)) {
             if (geomType === "Point") {
@@ -319,14 +281,13 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
                 popupAnchor: [0, -32]
               });
               const marker = L.marker(coords, { icon });
-              if (name) marker.bindTooltip(name, { permanent: true, direction: "bottom", offset: [0, 5], className: "map-label landmark-label" });
+              if (name) marker.bindTooltip(name, { permanent: true, direction: "top", offset: [0, -20], className: "gis-permanent-label" });
               marker.on("click", () => onFeatureClick?.(feature.properties || {}));
               marker.addTo(lGroup);
             }
           }
         });
 
-        clearAndSet("water", wGroup);
         clearAndSet("buildings", bGroup);
         clearAndSet("locations", lGroup);
       })

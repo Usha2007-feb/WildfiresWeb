@@ -24,9 +24,14 @@ export default function GeoFenceMap({ selectedAlert }: Props) {
 
     const map = L.map(container.current, {
       center: [23.5, 80], zoom: 5,
-      zoomControl: true, attributionControl: false,
+      minZoom: 5, maxZoom: 18,
+      zoomControl: false, attributionControl: false,
       scrollWheelZoom: true,
+      maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
+      maxBoundsViscosity: 1.0,
     });
+
+    L.control.zoom({ position: "bottomright" }).addTo(map);
 
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       attribution: "Esri, Maxar", maxZoom: 19,

@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { api } from "@/lib/constants";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, TrendingDown, TrendingUp, Minus, Trees, Square, Activity, Crosshair, Calendar, Target } from "lucide-react";
+import { X, TrendingDown, TrendingUp, Minus, Trees, Square, Activity, Crosshair, Calendar, Target, FileDown } from "lucide-react";
+import { useLang } from "@/components/auth/LanguageProvider";
 
 const DeforestationMapInner = dynamic(() => import("@/components/map/DeforestationMap"), { ssr: false });
 
@@ -32,6 +33,7 @@ function TrendPill({ trend, change }: { trend: string; change: number }) {
 }
 
 export default function DeforestationPage() {
+  const { lang } = useLang();
   const [features, setFeatures] = useState<ZoneFeature[]>([]);
   const [selected, setSelected] = useState<ZoneFeature | null>(null);
   const [detail, setDetail] = useState<ZoneDetail | null>(null);
@@ -76,6 +78,37 @@ export default function DeforestationPage() {
     <div className="relative h-[calc(100vh-64px)] w-full overflow-hidden">
       <DeforestationMapInner onZonesLoaded={setFeatures} onZoneClick={onZoneClick} onRectDraw={onRectDraw} drawMode={drawMode} onDrawEnd={() => setDrawMode(false)} />
 
+      {/* Zone Shortcuts — left panel, like dashboard ForestFilter */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.3 }}
+        className="absolute left-5 top-24 z-10"
+      >
+        <div className="rounded-2xl bg-white/95 backdrop-blur-xl px-4 py-4 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/70 w-52">
+          <div className="flex items-center gap-2 mb-3">
+            <Trees className="h-3.5 w-3.5 text-emerald-600" />
+            <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Monitored Zones</p>
+          </div>
+          <div className="space-y-1">
+            {features.filter((z: ZoneFeature) => z.type === "reserve").slice(0, 4).map((z: ZoneFeature) => (
+              <button
+                key={z.id}
+                onClick={() => onZoneClick(z)}
+                className={`group flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-all duration-200 ${
+                  selected?.id === z.id
+                    ? "bg-emerald-600 text-white shadow-md shadow-emerald-200"
+                    : "text-slate-600 hover:bg-emerald-50"
+                }`}
+              >
+                <span className="text-[13px] font-medium flex-1 truncate">{z.name}</span>
+                {selected?.id === z.id && <div className="h-2 w-2 rounded-full bg-white shrink-0" />}
+              </button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
       {/* Legend — bottom-left to avoid zoom toggle overlap */}
       <div className="absolute bottom-5 left-5 z-10 rounded-2xl bg-white/95 backdrop-blur-xl px-5 py-4 shadow-xl shadow-slate-200/50 ring-1 ring-slate-200/70">
         <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400 mb-3">Vegetation Health</p>
@@ -98,6 +131,14 @@ export default function DeforestationPage() {
             <Square className="h-4 w-4" />{drawMode ? "Drawing..." : "Draw Area"}
           </button>
           {hasRect && <button onClick={() => { setHasRect(false); setSelected(null); setDetail(null); }} className="flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-600 transition-all duration-200">Clear</button>}
+          <a
+            href={api(`/api/v1/reports/deforestation?lang=${lang}`)}
+            download
+            className="flex items-center gap-2 rounded-xl px-4 py-2 text-[13px] font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-all duration-200"
+          >
+            <FileDown className="h-4 w-4" />
+            AI Report
+          </a>
         </div>
       </div>
 
