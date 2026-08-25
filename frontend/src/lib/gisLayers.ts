@@ -37,6 +37,13 @@ export const REGION_LAYER_FILES: Record<string, string> = {
   laisong: "/gis/laisong_layers.geojson",
 };
 
+export const REGION_BOUNDARY_FILES: Record<string, string> = {
+  corbett:    "/gis/boundaries/corbett_boundary.geojson",
+  similipal:  "/gis/boundaries/similipal_boundary.geojson",
+  jyotikuchi: "/gis/boundaries/jyotikuchi_boundary.geojson",
+  laisong:    "/gis/boundaries/laisong_boundary.geojson",
+};
+
 export const ZONE_STYLE: Record<ZoneType, { color: string; fill: string; opacity: number; label: string }> = {
   core_zone: {
     color: "#DC2626",
