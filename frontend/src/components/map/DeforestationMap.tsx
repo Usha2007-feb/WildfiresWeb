@@ -39,7 +39,7 @@ export default function DeforestationMap({ onZonesLoaded, onZoneClick, onRectDra
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       attribution: "Esri, Maxar", maxZoom: 19,
     }).addTo(map);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: "OSM", maxZoom: 19, opacity: 0.35,
     }).addTo(map);
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);

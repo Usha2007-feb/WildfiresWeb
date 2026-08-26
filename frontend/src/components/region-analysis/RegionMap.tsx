@@ -62,7 +62,7 @@ export default function RegionMap({ regionId, center, bounds }: Props) {
       { attribution: "Esri, Maxar, Earthstar Geographics", maxZoom: 19 }
     ).addTo(map);
 
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: "OSM", maxZoom: 19, opacity: 0.35,
     }).addTo(map);
 

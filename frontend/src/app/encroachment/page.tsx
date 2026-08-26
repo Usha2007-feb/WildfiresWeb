@@ -69,23 +69,28 @@ export default function EncroachmentPage() {
   const [analysisLoading, setAnalysisLoading] = useState(true);
 
   // ── Fetch available years per region ────────────────────────────────────
+  // Update availableYears AND clamp before/after in a single batched state
+  // update so the analysis effect only fires once (not twice) per region change.
   useEffect(() => {
+    let cancelled = false;
     fetch(api("/api/v1/encroachment/status"))
       .then((r) => r.json())
       .then((data) => {
+        if (cancelled) return;
         const regionStatus = (data.regions as { id: string; available_years: number[] }[]).find(
           (r) => r.id === activeRegion.id
         );
         if (regionStatus?.available_years?.length) {
           const years = regionStatus.available_years;
+          // Batch all year-state updates together so only one analysis re-run fires
           setAvailableYears(years);
-          // Reset before/after if current selection is outside available range
-          if (!years.includes(beforeYear)) setBeforeYear(years[0]);
-          if (!years.includes(afterYear))  setAfterYear(years[years.length - 1]);
+          setBeforeYear((prev) => (years.includes(prev) ? prev : years[0]));
+          setAfterYear((prev) => (years.includes(prev) ? prev : years[years.length - 1]));
         }
       })
       .catch(() => {/* use defaults */});
-  }, [activeRegion.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => { cancelled = true; };
+  }, [activeRegion.id]);
 
   // ── Run analysis when region/years change ───────────────────────────────
   useEffect(() => {
@@ -248,7 +253,7 @@ export default function EncroachmentPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute bottom-5 right-5 z-[400] flex items-center gap-3 rounded-2xl bg-[#0F172A]/90 backdrop-blur-xl px-5 py-3 shadow-xl ring-1 ring-white/10"
+            className="absolute bottom-44 right-5 z-[460] flex items-center gap-3 rounded-2xl bg-[#0F172A]/90 backdrop-blur-xl px-5 py-3 shadow-xl ring-1 ring-white/10"
           >
             <motion.div
               className="h-5 w-5 rounded-full border-2 border-t-sky-400 border-white/20"

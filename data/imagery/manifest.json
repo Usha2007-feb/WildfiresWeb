@@ -1,0 +1,40 @@
+{
+  "exports": [
+    {
+      "description": "wildfire_jyotikuchi_landsat_2011",
+      "region": "jyotikuchi",
+      "year": 2011,
+      "sensor": "landsat",
+      "drive_folder": "wildfire_imagery",
+      "submitted_at": "2026-08-22T06:42:02.437846+00:00",
+      "task_id": "QR3PCJQXQCQ73VEI4HWLHWYS"
+    },
+    {
+      "description": "wildfire_jyotikuchi_sentinel2_2023",
+      "region": "jyotikuchi",
+      "year": 2023,
+      "sensor": "sentinel2",
+      "drive_folder": "wildfire_imagery",
+      "submitted_at": "2026-08-22T06:42:11.218907+00:00",
+      "task_id": "GO4JYC6C6OFQU5F3NLMH4AHI"
+    },
+    {
+      "description": "wildfire_similipal_landsat_2011",
+      "region": "similipal",
+      "year": 2011,
+      "sensor": "landsat",
+      "drive_folder": "wildfire_imagery",
+      "submitted_at": "2026-08-22T06:42:12.880322+00:00",
+      "task_id": "J7L7KVBCEAQCWZGYPOD33CHC"
+    },
+    {
+      "description": "wildfire_similipal_sentinel2_2023",
+      "region": "similipal",
+      "year": 2023,
+      "sensor": "sentinel2",
+      "drive_folder": "wildfire_imagery",
+      "submitted_at": "2026-08-22T06:42:13.538146+00:00",
+      "task_id": "NVKGPVURY3EBGJQTBBMKJGDK"
+    }
+  ]
+}

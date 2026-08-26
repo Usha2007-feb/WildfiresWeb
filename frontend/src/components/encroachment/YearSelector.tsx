@@ -17,10 +17,14 @@ export default function YearSelector({ beforeYear, afterYear, availableYears, on
   const years = [...availableYears].sort((a, b) => a - b);
   const min = years[0] ?? beforeYear;
   const max = years[years.length - 1] ?? afterYear;
+
+  // Use the props directly — they're always fresh on each render.
+  // Guard: before must be strictly less than after to avoid a backend 422.
   const selectYear = (year: number) => {
-    if (editing === "before" && year < afterYear) onBeforeChange(year);
-    if (editing === "after" && year > beforeYear) onAfterChange(year);
+    if (editing === "before" && year < afterYear && year !== beforeYear) onBeforeChange(year);
+    if (editing === "after"  && year > beforeYear && year !== afterYear)  onAfterChange(year);
   };
+
 
   return <section className="absolute bottom-5 left-1/2 z-[450] w-[min(760px,calc(100vw-3rem))] -translate-x-1/2">
     <div className="rounded-[24px] border border-white/15 bg-[#11151ddd]/90 px-5 py-4 shadow-[0_18px_55px_rgba(0,0,0,.48)] backdrop-blur-2xl">

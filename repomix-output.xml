@@ -1,0 +1,996 @@
+This file is a merged representation of a subset of the codebase, containing specifically included files, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of a subset of the repository's contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Only files matching these patterns are included: backend/routers/predict.py, frontend/public/gis/geo_fence_zones.geojson, frontend/src/app/region-analysis/page.tsx, frontend/public/forestReserves.geojson, frontend/src/app/globals.css, frontend/src/components/gis-portal/GISPortalMap.tsx
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+backend/
+  routers/
+    predict.py
+frontend/
+  public/
+    gis/
+      geo_fence_zones.geojson
+    forestReserves.geojson
+  src/
+    app/
+      region-analysis/
+        page.tsx
+      globals.css
+    components/
+      gis-portal/
+        GISPortalMap.tsx
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="frontend/public/gis/geo_fence_zones.geojson">
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "core_zone",
+        "name": "Corbett Core Zone (Dhikala)",
+        "management_unit": "Dhikala Range",
+        "area_sqkm": 520,
+        "protection_level": "strict",
+        "description": "No public access; highest biodiversity density zone"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.08, 29.32], [79.14, 29.33], [79.20, 29.35], [79.26, 29.38],
+          [79.30, 29.42], [79.28, 29.46], [79.24, 29.49], [79.18, 29.50],
+          [79.12, 29.49], [79.08, 29.46], [79.06, 29.42], [79.06, 29.37],
+          [79.08, 29.32]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "buffer_zone",
+        "name": "Corbett Buffer Zone",
+        "management_unit": "Mixed Ranges",
+        "area_sqkm": 466,
+        "protection_level": "moderate",
+        "description": "Limited regulated activities permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.05, 29.28], [79.14, 29.28], [79.25, 29.30], [79.35, 29.33],
+          [79.44, 29.37], [79.48, 29.43], [79.46, 29.50], [79.40, 29.54],
+          [79.30, 29.55], [79.18, 29.53], [79.08, 29.50], [79.00, 29.46],
+          [78.99, 29.40], [79.02, 29.33], [79.05, 29.28]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "corbett",
+        "zone_type": "eco_sensitive_zone",
+        "name": "Corbett Eco-Sensitive Zone",
+        "management_unit": "Peripheral",
+        "area_sqkm": 332,
+        "protection_level": "low",
+        "description": "Controlled development; eco-tourism permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.00, 29.25], [79.10, 29.25], [79.22, 29.26], [79.35, 29.28],
+          [79.46, 29.32], [79.50, 29.38], [79.50, 29.45], [79.47, 29.52],
+          [79.40, 29.56], [79.27, 29.56], [79.14, 29.55], [79.03, 29.52],
+          [78.96, 29.45], [78.96, 29.37], [78.99, 29.30], [79.00, 29.25]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "core_zone",
+        "name": "Similipal Core Zone (Tiger Reserve)",
+        "management_unit": "Nawana Range",
+        "area_sqkm": 845,
+        "protection_level": "strict",
+        "description": "Tiger core area; no human activity permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.20, 22.10], [86.30, 22.12], [86.40, 22.16], [86.50, 22.20],
+          [86.55, 22.26], [86.52, 22.32], [86.46, 22.37], [86.38, 22.40],
+          [86.28, 22.40], [86.20, 22.37], [86.14, 22.32], [86.12, 22.26],
+          [86.14, 22.20], [86.18, 22.14], [86.20, 22.10]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "buffer_zone",
+        "name": "Similipal Buffer Zone",
+        "management_unit": "Baripada, Khadgarh Ranges",
+        "area_sqkm": 1060,
+        "protection_level": "moderate",
+        "description": "Regulated grazing and collection permitted"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.12, 22.04], [86.25, 22.04], [86.40, 22.07], [86.56, 22.12],
+          [86.64, 22.18], [86.66, 22.26], [86.62, 22.36], [86.54, 22.43],
+          [86.42, 22.46], [86.28, 22.44], [86.15, 22.40], [86.08, 22.34],
+          [86.06, 22.26], [86.08, 22.17], [86.10, 22.08], [86.12, 22.04]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "similipal",
+        "zone_type": "eco_sensitive_zone",
+        "name": "Similipal Eco-Sensitive Zone",
+        "management_unit": "Peripheral Villages",
+        "area_sqkm": 845,
+        "protection_level": "low",
+        "description": "Fringe area with regulated agriculture and eco-tourism"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.08, 22.00], [86.22, 22.00], [86.38, 22.02], [86.56, 22.08],
+          [86.68, 22.14], [86.70, 22.24], [86.68, 22.34], [86.62, 22.42],
+          [86.50, 22.46], [86.36, 22.47], [86.20, 22.44], [86.08, 22.38],
+          [86.04, 22.28], [86.04, 22.18], [86.06, 22.08], [86.08, 22.00]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "jyotikuchi",
+        "zone_type": "core_zone",
+        "name": "Jyotikuchi Core Hill Area",
+        "management_unit": "Dhopolia Hill Core",
+        "area_sqkm": 28,
+        "protection_level": "strict",
+        "description": "Dense forest hilltop with restricted entry"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.70, 26.10], [91.74, 26.10], [91.78, 26.12], [91.81, 26.15],
+          [91.82, 26.19], [91.80, 26.22], [91.76, 26.24], [91.72, 26.24],
+          [91.69, 26.22], [91.68, 26.18], [91.68, 26.14], [91.70, 26.11],
+          [91.70, 26.10]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "jyotikuchi",
+        "zone_type": "buffer_zone",
+        "name": "Jyotikuchi Buffer (Guwahati Fringe)",
+        "management_unit": "Kamrup Range",
+        "area_sqkm": 35,
+        "protection_level": "moderate",
+        "description": "Urban-forest interface; no permanent structures"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.66, 26.07], [91.72, 26.07], [91.79, 26.09], [91.84, 26.13],
+          [91.86, 26.18], [91.85, 26.23], [91.81, 26.27], [91.75, 26.28],
+          [91.69, 26.27], [91.65, 26.23], [91.64, 26.18], [91.65, 26.12],
+          [91.66, 26.07]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "laisong",
+        "zone_type": "core_zone",
+        "name": "Laisong Reserved Forest Core",
+        "management_unit": "Laisong Range Core",
+        "area_sqkm": 150,
+        "protection_level": "strict",
+        "description": "Dense tropical mixed forest; closed to extraction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.84, 25.74], [92.90, 25.74], [92.97, 25.76], [93.02, 25.80],
+          [93.04, 25.85], [93.02, 25.90], [92.97, 25.94], [92.91, 25.96],
+          [92.85, 25.95], [92.81, 25.91], [92.80, 25.86], [92.81, 25.80],
+          [92.84, 25.74]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_id": "laisong",
+        "zone_type": "buffer_zone",
+        "name": "Laisong Buffer (Jatinga Corridor)",
+        "management_unit": "Haflong Range",
+        "area_sqkm": 180,
+        "protection_level": "moderate",
+        "description": "Includes Jatinga valley; seasonal bird migration corridor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.80, 25.72], [92.88, 25.72], [92.98, 25.74], [93.05, 25.78],
+          [93.08, 25.84], [93.07, 25.90], [93.03, 25.96], [92.96, 25.99],
+          [92.88, 26.00], [92.81, 25.97], [92.78, 25.92], [92.77, 25.85],
+          [92.78, 25.78], [92.80, 25.72]
+        ]]
+      }
+    }
+  ]
+}
+</file>
+
+<file path="frontend/public/forestReserves.geojson">
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "corbett",
+        "name": "Jim Corbett National Park",
+        "state": "Uttarakhand",
+        "area": "1318 km²",
+        "type": "boundary",
+        "division": "Corbett Tiger Reserve",
+        "range": "Dhikala, Bijrani, Jhirna, Dhela, Sonanadi",
+        "description": "India's oldest national park in the Himalayan foothills"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [79.05, 29.25], [79.12, 29.26], [79.20, 29.28], [79.28, 29.30],
+          [79.35, 29.32], [79.42, 29.35], [79.50, 29.38], [79.50, 29.42],
+          [79.48, 29.46], [79.45, 29.50], [79.42, 29.53], [79.38, 29.55],
+          [79.32, 29.55], [79.25, 29.54], [79.18, 29.52], [79.10, 29.50],
+          [79.05, 29.48], [79.00, 29.45], [78.97, 29.42], [78.97, 29.38],
+          [79.00, 29.33], [79.03, 29.29], [79.05, 29.25]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "similipal",
+        "name": "Similipal National Park",
+        "state": "Odisha",
+        "area": "2750 km²",
+        "type": "boundary",
+        "division": "Similipal Tiger Reserve",
+        "range": "Baripada, Khadgarh, Pithabata, Nawana",
+        "description": "Vast dry deciduous wilderness in eastern India"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [86.10, 22.00], [86.18, 22.00], [86.28, 22.02], [86.38, 22.05],
+          [86.48, 22.08], [86.58, 22.12], [86.68, 22.15], [86.70, 22.20],
+          [86.70, 22.25], [86.68, 22.30], [86.65, 22.35], [86.60, 22.40],
+          [86.55, 22.44], [86.48, 22.45], [86.40, 22.45], [86.32, 22.43],
+          [86.24, 22.40], [86.16, 22.36], [86.10, 22.32], [86.06, 22.26],
+          [86.05, 22.20], [86.07, 22.13], [86.10, 22.07], [86.10, 22.00]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jyotikuchi",
+        "name": "Jyotikuchi Dhopolia Hill",
+        "state": "Assam",
+        "area": "85 km²",
+        "type": "boundary",
+        "division": "Kamrup Forest Division",
+        "range": "Jyotikuchi Range",
+        "description": "Urban-forest interface hill near Guwahati city"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [91.65, 26.05], [91.70, 26.05], [91.76, 26.07], [91.82, 26.09],
+          [91.87, 26.12], [91.88, 26.16], [91.88, 26.20], [91.86, 26.24],
+          [91.83, 26.27], [91.78, 26.28], [91.72, 26.28], [91.67, 26.26],
+          [91.65, 26.23], [91.64, 26.18], [91.64, 26.13], [91.65, 26.08],
+          [91.65, 26.05]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "laisong",
+        "name": "Laisong Reserved Forest",
+        "state": "Assam",
+        "area": "450 km²",
+        "type": "boundary",
+        "division": "Dima Hasao Forest Division",
+        "range": "Haflong Range, Laisong Range",
+        "description": "Remote tropical deciduous forest in the Dima Hasao hills"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [92.80, 25.70], [92.88, 25.70], [92.96, 25.72], [93.03, 25.75],
+          [93.08, 25.78], [93.10, 25.82], [93.10, 25.87], [93.08, 25.92],
+          [93.05, 25.96], [93.00, 26.00], [92.93, 26.00], [92.86, 25.98],
+          [92.80, 25.95], [92.78, 25.90], [92.78, 25.84], [92.79, 25.77],
+          [92.80, 25.70]
+        ]]
+      }
+    }
+  ]
+}
+</file>
+
+<file path="frontend/src/app/region-analysis/page.tsx">
+import { redirect } from "next/navigation";
+export default function RegionAnalysisRedirect() {
+  redirect("/forest-ops");
+}
+</file>
+
+<file path="backend/routers/predict.py">
+from fastapi import APIRouter, Query
+import logging
+
+router = APIRouter(prefix="/api/v1", tags=["predict"])
+logger = logging.getLogger(__name__)
+
+
+@router.get("/predict")
+def predict(lat: float = Query(...), lon: float = Query(...)):
+    try:
+        from backend.services.water_mask import is_on_water
+        from wildfire_engine.inference.predictor import _is_on_land
+        
+        if is_on_water(lat, lon) or not _is_on_land(lat, lon):
+            return {"water_body": True, "message": "Prediction disabled over water bodies."}
+            
+        from wildfire_engine.inference import predictor
+        return predictor.predict(lat, lon)
+    except Exception as e:
+        logger.warning(f"Model predict failed, falling back to synthetic: {e}")
+        return _synthetic_predict(lat, lon)
+
+
+def _synthetic_predict(lat: float, lon: float) -> dict:
+    import math
+    from datetime import datetime
+
+    month = datetime.now().month
+    lat_factor = 1.0 - abs(lat - 22.0) / 20.0
+    lon_factor = 1.0 - abs(lon - 80.0) / 15.0
+    seasonal = 0.5 + 0.5 * math.sin(2 * math.pi * (month - 3) / 12)
+    risk = max(0, min(100, lat_factor * lon_factor * seasonal * 100 * (0.8 + 0.4 * math.sin(lat * lon * 0.01))))
+
+    return {
+        "wildfire_risk": round(risk, 2),
+        "temperature": round(25 + 10 * lat_factor + math.sin(month * 0.5) * 5, 1),
+        "humidity": round(60 - 20 * lat_factor + math.cos(month * 0.5) * 10, 1),
+        "wind": round(2 + 4 * seasonal, 1),
+    }
+</file>
+
+<file path="frontend/src/app/globals.css">
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+:root {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #0F172A;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
+  --accent: #EFF6FF;
+  --accent-foreground: #1D4ED8;
+  --destructive: #DC2626;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2563EB;
+  --radius: 0.75rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #0F172A;
+  --sidebar-primary: #2563EB;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EFF6FF;
+  --sidebar-accent-foreground: #1D4ED8;
+  --sidebar-border: #E2E8F0;
+  --sidebar-ring: #2563EB;
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground antialiased; font-family: 'Inter', sans-serif; }
+}
+
+@keyframes pulse-fire {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+
+.leaflet-control-zoom { border: none !important; border-radius: 12px !important; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important; }
+.leaflet-control-zoom a { background: white !important; color: #374151 !important; width: 34px !important; height: 34px !important; line-height: 34px !important; font-size: 18px !important; }
+.leaflet-control-zoom a:hover { background: #F1F5F9 !important; }
+.leaflet-control-attribution { font-size: 10px !important; opacity: 0.5 !important; background: transparent !important; }
+
+/* ============================================================
+   Professional Cartographic Map Labels — Leaflet Tooltip System
+   ============================================================ */
+
+/* ── Base: strip all Leaflet tooltip chrome ── */
+.leaflet-tooltip.map-label,
+.leaflet-tooltip.map-label::before {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* ── Base label typography ── */
+.leaflet-tooltip.map-label {
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 10.5px;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  pointer-events: none;
+  /* Strong multi-layer white text-stroke for satellite imagery legibility */
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.95),
+     1.5px -1.5px 0 rgba(255,255,255,0.95),
+    -1.5px  1.5px 0 rgba(255,255,255,0.95),
+     1.5px  1.5px 0 rgba(255,255,255,0.95),
+    -2px    0px   0 rgba(255,255,255,0.85),
+     2px    0px   0 rgba(255,255,255,0.85),
+     0px   -2px   0 rgba(255,255,255,0.85),
+     0px    2px   0 rgba(255,255,255,0.85),
+     0px    3px   6px rgba(0,0,0,0.55),
+     0px    1px   3px rgba(0,0,0,0.40);
+}
+
+/* ── Water / River labels: blue + italic (cartographic convention) ── */
+.leaflet-tooltip.map-label.water-label {
+  color: #1a56db !important;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.98),
+     1.5px -1.5px 0 rgba(255,255,255,0.98),
+    -1.5px  1.5px 0 rgba(255,255,255,0.98),
+     1.5px  1.5px 0 rgba(255,255,255,0.98),
+    -2px    0px   0 rgba(220,240,255,0.90),
+     2px    0px   0 rgba(220,240,255,0.90),
+     0px    4px   8px rgba(0,20,80,0.50),
+     0px    1px   3px rgba(0,0,0,0.35);
+}
+
+/* ── Road labels: amber/brown ── */
+.leaflet-tooltip.map-label.road-label {
+  color: #92400e !important;
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.97),
+     1.5px -1.5px 0 rgba(255,255,255,0.97),
+    -1.5px  1.5px 0 rgba(255,255,255,0.97),
+     1.5px  1.5px 0 rgba(255,255,255,0.97),
+     0px    3px   7px rgba(80,30,0,0.45),
+     0px    1px   3px rgba(0,0,0,0.35);
+}
+
+/* ── Landmark / POI labels ── */
+.leaflet-tooltip.map-label.landmark-label {
+  color: #1e293b !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ── Forest boundary labels: emerald green ── */
+.leaflet-tooltip.map-label.boundary-label {
+  color: #065f46 !important;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow:
+    -2px -2px 0 rgba(255,255,255,0.97),
+     2px -2px 0 rgba(255,255,255,0.97),
+    -2px  2px 0 rgba(255,255,255,0.97),
+     2px  2px 0 rgba(255,255,255,0.97),
+     0px  4px 10px rgba(0,40,20,0.50),
+     0px  1px  3px rgba(0,0,0,0.40);
+}
+
+/* ── Geo-fence zone labels ── */
+.leaflet-tooltip.map-label.zone-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Zone-type colour variants */
+.leaflet-tooltip.map-label.zone-core {
+  color: #b91c1c !important; /* deep red — core zone */
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.97),
+     1.5px -1.5px 0 rgba(255,255,255,0.97),
+    -1.5px  1.5px 0 rgba(255,255,255,0.97),
+     1.5px  1.5px 0 rgba(255,255,255,0.97),
+     0px    4px   9px rgba(120,0,0,0.45),
+     0px    1px   3px rgba(0,0,0,0.40);
+}
+
+.leaflet-tooltip.map-label.zone-buffer {
+  color: #b45309 !important; /* amber — buffer zone */
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.97),
+     1.5px -1.5px 0 rgba(255,255,255,0.97),
+    -1.5px  1.5px 0 rgba(255,255,255,0.97),
+     1.5px  1.5px 0 rgba(255,255,255,0.97),
+     0px    4px   9px rgba(90,40,0,0.40),
+     0px    1px   3px rgba(0,0,0,0.35);
+}
+
+.leaflet-tooltip.map-label.zone-eco {
+  color: #047857 !important; /* emerald — eco-sensitive zone */
+  text-shadow:
+    -1.5px -1.5px 0 rgba(255,255,255,0.97),
+     1.5px -1.5px 0 rgba(255,255,255,0.97),
+    -1.5px  1.5px 0 rgba(255,255,255,0.97),
+     1.5px  1.5px 0 rgba(255,255,255,0.97),
+     0px    4px   9px rgba(0,60,30,0.40),
+     0px    1px   3px rgba(0,0,0,0.35);
+}
+</file>
+
+<file path="frontend/src/components/gis-portal/GISPortalMap.tsx">
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet.markercluster";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import { ZONE_STYLE, REGION_LAYER_FILES, type ZoneType } from "@/lib/gisLayers";
+import { REGIONS } from "@/lib/regions";
+import type { Alert } from "@/hooks/useAlerts";
+
+type OverlayKey =
+  | "boundaries"
+  | "geofence"
+  | "water"
+  | "buildings"
+  | "locations"
+  | "alerts";
+
+interface Props {
+  activeRegion: string;
+  visibleLayers: Record<OverlayKey, boolean>;
+  onFeatureClick?: (props: Record<string, string>) => void;
+  alerts?: Alert[];
+  onAlertClick?: (alert: Alert) => void;
+  /** Called when the user clicks a blank map area (for point-prediction mode) */
+  onMapClick?: (lat: number, lon: number) => void;
+  /** Fly to this location when it changes (e.g. from alert selection) */
+  flyToAlert?: { lat: number; lon: number } | null;
+}
+
+export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureClick, alerts = [], onAlertClick, onMapClick, flyToAlert }: Props) {
+  const container = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const initialized = useRef(false);
+  // Keep latest onMapClick in a ref so the map click handler is never stale
+  const onMapClickRef = useRef(onMapClick);
+  useEffect(() => { onMapClickRef.current = onMapClick; }, [onMapClick]);
+
+  const layerRefs = useRef<Record<string, L.Layer | L.LayerGroup | null>>({
+    boundaries: null,
+    geofence: null,
+    water: null,
+    buildings: null,
+    locations: null,
+    alerts: null,
+  });
+
+  // ---- Map init ----
+  useEffect(() => {
+    if (!container.current || initialized.current) return;
+    initialized.current = true;
+
+    const map = L.map(container.current, {
+      center: [24.0, 83.0],
+      zoom: 5,
+      zoomControl: true,
+      attributionControl: false,
+      scrollWheelZoom: true,
+    });
+
+    // Satellite base layer
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+      { attribution: "Esri, Maxar, Earthstar Geographics", maxZoom: 19 }
+    ).addTo(map);
+
+    // Labels overlay
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap",
+      maxZoom: 19,
+      opacity: 0.3,
+    }).addTo(map);
+
+    L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
+
+    // Forward bare map clicks to the prediction handler (Analysis tab)
+    map.on("click", (e: L.LeafletMouseEvent) => {
+      onMapClickRef.current?.(e.latlng.lat, e.latlng.lng);
+    });
+
+    mapRef.current = map;
+
+    // Load all region boundaries
+    loadBoundaries(map);
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+      initialized.current = false;
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ---- Fly to alert location ----
+  useEffect(() => {
+    if (!mapRef.current || !flyToAlert) return;
+    mapRef.current.flyTo([flyToAlert.lat, flyToAlert.lon], 14, { duration: 1 });
+  }, [flyToAlert]);
+
+  // ---- Pan to active region ----
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const region = REGIONS.find((r) => r.id === activeRegion);
+    if (!region) return;
+    const bounds: L.LatLngBoundsExpression = [
+      [region.bounds.lat_min, region.bounds.lon_min],
+      [region.bounds.lat_max, region.bounds.lon_max],
+    ];
+    mapRef.current.flyToBounds(bounds, { padding: [40, 40], maxZoom: 13, duration: 1.2 });
+
+    // Reload per-region layers
+    loadRegionLayers(mapRef.current, activeRegion);
+    loadGeoFence(mapRef.current, activeRegion);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRegion]);
+
+  // ---- Toggle layer visibility ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    (Object.keys(visibleLayers) as OverlayKey[]).forEach((key) => {
+      const layer = layerRefs.current[key];
+      if (!layer) return;
+      if (visibleLayers[key]) {
+        if (!map.hasLayer(layer)) map.addLayer(layer);
+      } else {
+        if (map.hasLayer(layer)) map.removeLayer(layer);
+      }
+    });
+  }, [visibleLayers]);
+
+  // ---- Geo-fence fire alerts ----
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    const previous = layerRefs.current.alerts;
+    if (previous && map.hasLayer(previous)) map.removeLayer(previous);
+
+    const group = L.markerClusterGroup({ maxClusterRadius: 40 });
+    alerts.forEach((alert) => {
+      const marker = L.circleMarker([alert.lat, alert.lon], {
+        radius: 8,
+        color: "#FFFFFF",
+        weight: 2,
+        fillColor: "#DC2626",
+        fillOpacity: 0.95,
+      });
+      marker.bindTooltip(
+        `<b>${alert.zone_name}</b><br/>FRP: ${alert.frp.toFixed(1)} MW · ${alert.date}`,
+        { direction: "top", offset: [0, -8], permanent: false },
+      );
+      marker.on("click", () => onAlertClick?.(alert));
+      marker.addTo(group);
+    });
+
+    layerRefs.current.alerts = group;
+    if (visibleLayers.alerts) group.addTo(map);
+  }, [alerts, onAlertClick, visibleLayers.alerts]);
+
+  function loadBoundaries(map: L.Map) {
+    fetch("/forestReserves.geojson")
+      .then((r) => r.json())
+      .then((data) => {
+        if (mapRef.current !== map) return;
+        const layer = L.geoJSON(data as never, {
+          style: () => ({
+            color: "#16A34A",
+            weight: 2.5,
+            fillColor: "#22C55E",
+            fillOpacity: 0.12,
+            dashArray: "6 3",
+          }),
+          onEachFeature: (feature: any, l) => {
+            const p = feature.properties || {};
+            if (p.name) {
+              l.bindTooltip(p.name, {
+                permanent: true,
+                direction: "center",
+                className: "map-label boundary-label",
+              });
+            }
+            l.on("click", () => onFeatureClick?.(p));
+          },
+        });
+        if (visibleLayers.boundaries) layer.addTo(map);
+        layerRefs.current.boundaries = layer;
+      })
+      .catch((e) => console.warn("[GISPortal] boundaries load error:", e));
+  }
+
+  function loadGeoFence(map: L.Map, regionId: string) {
+    const prev = layerRefs.current.geofence;
+    if (prev && map.hasLayer(prev)) map.removeLayer(prev);
+    layerRefs.current.geofence = null;
+
+    fetch("/gis/geo_fence_zones.geojson")
+      .then((r) => r.json())
+      .then((data) => {
+        if (mapRef.current !== map) return;
+        const group = L.layerGroup();
+        const filtered = (data.features as any[]).filter(
+          (f: any) => f?.properties?.region_id === regionId
+        );
+
+        filtered.forEach((feature: any) => {
+          const zoneType = (feature.properties?.zone_type || "buffer_zone") as ZoneType;
+          const style = ZONE_STYLE[zoneType] || ZONE_STYLE.buffer_zone;
+
+          // Map zone_type → CSS modifier class for colour-coded labels
+          const zoneCssClass: Record<string, string> = {
+            core_zone: "zone-core",
+            buffer_zone: "zone-buffer",
+            eco_sensitive_zone: "zone-eco",
+          };
+          const zoneClass = zoneCssClass[zoneType] || "zone-buffer";
+
+          const l = L.geoJSON(feature as never, {
+            style: () => ({
+              color: style.color,
+              weight: 2,
+              fillColor: style.fill,
+              fillOpacity: style.opacity,
+              dashArray: zoneType === "core_zone" ? "" : "5 4",
+            }),
+          });
+          l.bindTooltip(
+            feature.properties?.name || style.label,
+            {
+              permanent: true,
+              direction: "center",
+              className: `map-label zone-label ${zoneClass}`,
+            }
+          );
+          l.on("click", () => onFeatureClick?.(feature.properties || {}));
+          l.addTo(group);
+        });
+
+        layerRefs.current.geofence = group;
+        if (visibleLayers.geofence) group.addTo(map);
+      })
+      .catch((e) => console.warn("[GISPortal] geofence load error:", e));
+  }
+
+  function loadRegionLayers(map: L.Map, regionId: string) {
+    const clearAndSet = (
+      key: "water" | "buildings" | "locations",
+      group: L.LayerGroup
+    ) => {
+      const prev = layerRefs.current[key];
+      if (prev && map.hasLayer(prev)) map.removeLayer(prev);
+      layerRefs.current[key] = group;
+      if (visibleLayers[key]) group.addTo(map);
+    };
+
+    const wGroup = L.layerGroup();
+    const bGroup = L.layerGroup();
+    const lGroup = L.markerClusterGroup({ maxClusterRadius: 50, spiderfyOnMaxZoom: true });
+
+    fetch(`/gis/${regionId}_layers.geojson`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (mapRef.current !== map) return;
+        (data.features as any[]).forEach((feature: any) => {
+          const type = feature.properties?.layer_type as string;
+          const name = feature.properties?.name || "";
+          const geomType = feature.geometry?.type;
+
+          if (type === "water") {
+            const l = L.geoJSON(feature as never, {
+              style: () => ({ color: "#2563EB", weight: 2, fillColor: "#60A5FA", fillOpacity: 0.3 }),
+              pointToLayer: (_f, latlng) =>
+                L.circleMarker(latlng, { radius: 6, color: "#2563EB", fillColor: "#60A5FA", fillOpacity: 0.7, weight: 2 }),
+            });
+            if (name) l.bindTooltip(name, { permanent: true, direction: "center", className: "map-label water-label" });
+            l.addTo(wGroup);
+          } else if (type === "building" || type === "road") {
+            const l = L.geoJSON(feature as never, {
+              style: () => ({
+                color: "#78350F",
+                weight: type === "road" ? 2 : 1,
+                fillColor: "#FCD34D",
+                fillOpacity: 0.25,
+                dashArray: type === "road" ? "4 3" : undefined,
+              }),
+              pointToLayer: (_f, latlng) =>
+                L.circleMarker(latlng, { radius: 5, color: "#78350F", fillColor: "#FCD34D", fillOpacity: 0.8, weight: 2 }),
+            });
+            if (name) l.bindTooltip(name, { permanent: true, direction: "center", className: "map-label road-label" });
+            l.addTo(bGroup);
+          } else if (["landmark", "entry_point", "watchtower", "office"].includes(type)) {
+            if (geomType === "Point") {
+              const coords: [number, number] = [
+                feature.geometry.coordinates[1],
+                feature.geometry.coordinates[0],
+              ];
+              
+              const typeColors: Record<string, string> = {
+                entry_point: "#f59e0b", // amber
+                watchtower: "#8b5cf6", // violet
+                office: "#3b82f6",     // blue
+                landmark: "#f43f5e",   // rose
+              };
+              const pinColor = typeColors[type] || "#64748b";
+              
+              const svg = `<svg width="24" height="32" viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0C5.373 0 0 5.373 0 12C0 21 12 32 12 32C12 32 24 21 24 12C24 5.373 18.627 0 12 0Z" fill="${pinColor}" stroke="#FFFFFF" stroke-width="1.5" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));"/>
+                <circle cx="12" cy="11" r="5" fill="#FFFFFF"/>
+              </svg>`;
+
+              const icon = L.divIcon({
+                html: svg,
+                className: "custom-svg-pin",
+                iconSize: [24, 32],
+                iconAnchor: [12, 32],
+                popupAnchor: [0, -32]
+              });
+              const marker = L.marker(coords, { icon });
+              if (name) marker.bindTooltip(name, { permanent: true, direction: "bottom", offset: [0, 5], className: "map-label landmark-label" });
+              marker.on("click", () => onFeatureClick?.(feature.properties || {}));
+              marker.addTo(lGroup);
+            }
+          }
+        });
+
+        clearAndSet("water", wGroup);
+        clearAndSet("buildings", bGroup);
+        clearAndSet("locations", lGroup);
+      })
+      .catch((e) => console.warn(`[GISPortal] Layer file for ${regionId} not found:`, e));
+  }
+
+  return <div ref={container} className="h-full w-full" />;
+}
+</file>
+
+</files>

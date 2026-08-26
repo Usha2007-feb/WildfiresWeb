@@ -21,11 +21,13 @@ interface Props {
   activeRegion: string;
   visibleLayers: Record<OverlayKey, boolean>;
   onFeatureClick?: (props: Record<string, string>) => void;
+  onMapClick?: (lat: number, lon: number) => void;
   alerts?: Alert[];
   onAlertClick?: (alert: Alert) => void;
+  flyToAlert?: { lat: number; lon: number } | null;
 }
 
-export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureClick, alerts = [], onAlertClick }: Props) {
+export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureClick, onMapClick, alerts = [], onAlertClick, flyToAlert }: Props) {
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<L.Map | null>(null);
   const initialized = useRef(false);
@@ -64,7 +66,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     ).addTo(map);
 
     // Labels overlay
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: "© OpenStreetMap",
       maxZoom: 19,
       opacity: 0.3,
@@ -73,6 +75,7 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
 
     mapRef.current = map;
+    map.on("click", (event) => onMapClick?.(event.latlng.lat, event.latlng.lng));
 
     // Load all region boundaries
     loadBoundaries(map);
@@ -146,6 +149,11 @@ export default function GISPortalMap({ activeRegion, visibleLayers, onFeatureCli
     layerRefs.current.alerts = group;
     if (visibleLayers.alerts) group.addTo(map);
   }, [alerts, onAlertClick, visibleLayers.alerts]);
+
+  useEffect(() => {
+    if (!mapRef.current || !flyToAlert) return;
+    mapRef.current.flyTo([flyToAlert.lat, flyToAlert.lon], 12, { duration: 0.8 });
+  }, [flyToAlert]);
 
   function loadBoundaries(map: L.Map) {
     fetch("/forestReserves.geojson")

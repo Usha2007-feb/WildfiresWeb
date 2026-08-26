@@ -1,0 +1,17 @@
+{
+  "type": "FeatureCollection",
+  "name": "Jyotikuchi Forest Reserve study extent",
+  "center": [26.18, 91.65],
+  "features": [{
+    "type": "Feature",
+    "properties": {
+      "name": "Jyotikuchi Forest Reserve study extent",
+      "layer_type": "protected_area",
+      "note": "Study extent used for the case study; replace with an official surveyed boundary for final reporting."
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[[91.5, 26.1], [91.8, 26.1], [91.8, 26.3], [91.5, 26.3], [91.5, 26.1]]]
+    }
+  }]
+}

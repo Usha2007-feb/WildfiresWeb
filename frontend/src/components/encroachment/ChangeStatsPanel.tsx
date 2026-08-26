@@ -112,7 +112,7 @@ export default function ChangeStatsPanel({
           animate={{ x: 0 }}
           exit={{ x: 480 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="absolute right-5 top-20 z-[500] h-[calc(100%-7rem)] w-[460px] overflow-y-auto rounded-[26px] border border-white/12 bg-[#11151d]/94 text-white shadow-[0_24px_70px_rgba(0,0,0,.55)] backdrop-blur-2xl"
+          className="absolute right-5 top-24 bottom-40 z-[500] w-[460px] overflow-y-auto rounded-[26px] border border-white/12 bg-[#11151d]/94 text-white shadow-[0_24px_70px_rgba(0,0,0,.55)] backdrop-blur-2xl"
         >
           {/* ── Header ────────────────────────────────────────────────── */}
           <header className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-white/10 bg-[#11151d]/88 px-6 py-4 backdrop-blur-xl">

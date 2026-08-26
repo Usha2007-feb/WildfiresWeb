@@ -106,8 +106,8 @@ interface Props {
 
 export default function LayerSwitcher({ activeLayer, onSelect, activeYear }: Props) {
   return (
-    <div className="absolute left-5 bottom-5 z-[400]">
-      <div className="rounded-2xl bg-[#0F172A]/92 backdrop-blur-xl shadow-2xl shadow-black/40 ring-1 ring-white/10 overflow-hidden w-[210px]">
+    <div className="absolute left-5 bottom-40 z-[400]">
+      <div className="rounded-2xl bg-[#0F172A]/92 backdrop-blur-xl shadow-2xl shadow-black/40 ring-1 ring-white/10 overflow-y-auto w-[210px] max-h-[calc(100vh-34rem)]">
         {/* Header */}
         <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
           <Layers className="h-4 w-4 text-sky-400 shrink-0" />

@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "name": "Laisong Forest Boundary",
+  "center": [
+    25.84,
+    92.91
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Laisong Region (Approximate Boundary)",
+        "layer_type": "protected_area",
+        "note": "Approximate boundary \u2014 replace with official data from ISRO Bhuvan/FSI"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              92.85,
+              25.75
+            ],
+            [
+              93.05,
+              25.75
+            ],
+            [
+              93.05,
+              25.95
+            ],
+            [
+              92.85,
+              25.95
+            ],
+            [
+              92.85,
+              25.75
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

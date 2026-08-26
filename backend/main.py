@@ -64,6 +64,7 @@ from backend.routers.deforestation import router as deforestation_router
 from backend.routers.gis import router as gis_router
 from backend.routers.monitoring import router as monitoring_router
 from backend.routers.reports import router as reports_router
+from backend.routers.encroachment import router as encroachment_router
 
 app.include_router(heatmap_router)
 app.include_router(predict_router)
@@ -79,6 +80,7 @@ app.include_router(deforestation_router)
 app.include_router(gis_router)
 app.include_router(monitoring_router)
 app.include_router(reports_router)
+app.include_router(encroachment_router)
 
 
 @app.get("/health")

@@ -52,7 +52,7 @@ export default function MapView() {
       maxBoundsViscosity: 1.0,
     });
 
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: "&copy; OpenStreetMap", maxZoom: 19,
     }).addTo(map);
 

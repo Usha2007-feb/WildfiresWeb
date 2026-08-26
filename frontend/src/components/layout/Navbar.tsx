@@ -14,6 +14,7 @@ export default function Navbar() {
     { href: "/gis-portal", label: t("nav", "gis") },
     { href: "/monitoring", label: t("nav", "monitoring") },
     { href: "/deforestation", label: t("nav", "deforestation") },
+    { href: "/encroachment", label: lang === "hi" ? "अतिक्रमण" : "Encroachment" },
     { href: "/region-analysis", label: t("nav", "cnn") },
     { href: "/model-explanation", label: t("nav", "metrics") },
     { href: "/research", label: t("nav", "research") },

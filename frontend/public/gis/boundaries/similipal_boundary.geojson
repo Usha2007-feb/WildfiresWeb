@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "name": "Similipal Forest Boundary",
+  "center": [
+    21.8,
+    86.25
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Similipal Region (Approximate Boundary)",
+        "layer_type": "protected_area",
+        "note": "Approximate boundary \u2014 replace with official data from ISRO Bhuvan/FSI"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              85.7,
+              21.4
+            ],
+            [
+              86.8,
+              21.4
+            ],
+            [
+              86.8,
+              22.2
+            ],
+            [
+              85.7,
+              22.2
+            ],
+            [
+              85.7,
+              21.4
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

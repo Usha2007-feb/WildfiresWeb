@@ -32,7 +32,7 @@ export default function NDVIMap({ year, zoneId, side, onYearChange }: Props) {
       maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
       maxBoundsViscosity: 1.0,
     });
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
       attribution: "OSM", maxZoom: 19,
     }).addTo(map);
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);

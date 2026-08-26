@@ -12,3 +12,8 @@ outputs/
 !models/wildfire_ensemble.pkl
 .DS_Store
 venv/
+*.tif
+*.tiff
+data/imagery/**/*.tif
+data/imagery/**/*.tiff
+
