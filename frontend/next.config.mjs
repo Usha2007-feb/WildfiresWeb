@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   
-  output: "standalone",
+  ...(process.env.DOCKER_BUILD ? { output: "standalone" } : {}),
 
   images: {
     unoptimized: true,
