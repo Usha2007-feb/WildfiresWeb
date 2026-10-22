@@ -32,9 +32,15 @@ export default function NDVIMap({ year, zoneId, side, onYearChange }: Props) {
       maxBounds: L.latLngBounds([5.0, 65.0], [37.0, 100.0]),
       maxBoundsViscosity: 1.0,
     });
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: "OSM", maxZoom: 19,
-    }).addTo(map);
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      { attribution: "Tiles &copy; Esri", maxZoom: 19, maxNativeZoom: 16 }
+    ).addTo(map);
+
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+      { attribution: "", maxZoom: 19, maxNativeZoom: 16 }
+    ).addTo(map);
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
     mapRef.current = map;
 

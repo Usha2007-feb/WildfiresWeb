@@ -58,9 +58,10 @@ export default function GISZoneMap({ onZonesLoaded, onZoneClick, hiddenTypes, sa
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       attribution: "Esri, Maxar", maxZoom: 19,
     }).addTo(map);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: "OSM", maxZoom: 19, opacity: 0.3,
-    }).addTo(map);
+    L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",
+      { attribution: "Esri", maxZoom: 19 }
+    ).addTo(map);
     L.control.attribution({ position: "bottomright", prefix: false }).addTo(map);
     poiMarkersRef.current.addTo(map);
     mapRef.current = map;
